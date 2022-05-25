@@ -9,12 +9,14 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_power_file_preview/src/enums/download_state.dart';
-import 'package:flutter_power_file_preview/src/enums/engine_state.dart';
+import 'package:flutter_power_file_preview/src/enum/download_state.dart';
+import 'package:flutter_power_file_preview/src/enum/engine_state.dart';
 import 'package:flutter_power_file_preview/src/utils/download_util.dart';
 
+import 'src/constant/constant.dart';
+
 class FlutterPowerFilePreview {
-  static const MethodChannel _channel = MethodChannel('cn.vvkeep/flutter_power_file_preview');
+  static const MethodChannel _channel = MethodChannel(Constants.channelName);
 
   static final _engineInitController = StreamController<EngineState>.broadcast();
   static Stream<EngineState> get engineInitStream => _engineInitController.stream;
@@ -53,7 +55,7 @@ class FlutterPowerFilePreview {
       DownloadUtil.download(
         fileUrl,
         filePath,
-        callback: callback,
+        callback: (value) => callback(value),
         onProgress: onProgress,
         queryParameters: queryParameters,
         cancelToken: cancelToken,

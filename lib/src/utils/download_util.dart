@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_power_file_preview/src/enums/download_state.dart';
+import 'package:flutter_power_file_preview/src/enum/download_state.dart';
 import 'package:flutter_power_file_preview/src/i18n/power_localizations.dart';
 
 import 'file_util.dart';
