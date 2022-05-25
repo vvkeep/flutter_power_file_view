@@ -6,7 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_power_file_preview/flutter_power_file_preview.dart';
 import 'package:flutter_power_file_preview/src/constant/constant.dart';
 import 'package:flutter_power_file_preview/src/enum/engine_state.dart';
-import 'package:flutter_power_file_preview/src/enum/perview_type.dart';
+import 'package:flutter_power_file_preview/src/enum/preview_type.dart';
 import 'package:flutter_power_file_preview/src/i18n/power_localizations.dart';
 import 'package:flutter_power_file_preview/src/utils/file_util.dart';
 
@@ -25,29 +25,29 @@ class _LocalFilePreviewWidgetState extends State<LocalFilePreviewWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<PerviewType>(
+    return FutureBuilder<PreviewType>(
       future: getViewType(),
-      initialData: PerviewType.none,
-      builder: (BuildContext context, AsyncSnapshot<PerviewType> snapshot) {
+      initialData: PreviewType.none,
+      builder: (BuildContext context, AsyncSnapshot<PreviewType> snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
-          switch (snapshot.data ?? PerviewType.none) {
-            case PerviewType.unsupportedPlatform:
+          switch (snapshot.data ?? PreviewType.none) {
+            case PreviewType.unsupportedPlatform:
               return _buildUnSupportPlatformWidget();
-            case PerviewType.nonExistent:
+            case PreviewType.nonExistent:
               return _buildNonexistentWidget();
-            case PerviewType.unsupportedType:
+            case PreviewType.unsupportedType:
               return _buildUnsupportTypeWidget();
-            case PerviewType.engineLoading:
+            case PreviewType.engineLoading:
               return _buildEngineLoadingWidget();
-            case PerviewType.engineFail:
+            case PreviewType.engineFail:
               return _buildEngineFailWidget();
-            case PerviewType.done:
+            case PreviewType.done:
               if (Platform.isAndroid) {
                 return _createAndroidView();
               } else {
                 return _createIOSView();
               }
-            case PerviewType.none:
+            case PreviewType.none:
               return _buildPlaceholderWidget();
           }
         }
@@ -114,16 +114,16 @@ class _LocalFilePreviewWidgetState extends State<LocalFilePreviewWidget> {
   }
 
   /// Display different layouts by changing status
-  Future<PerviewType> getViewType() async {
+  Future<PreviewType> getViewType() async {
     if (Platform.isAndroid || Platform.isIOS) {
       if (FileUtil.isExistsFile(filePath)) {
         if (FileUtil.isSupportOpen(fileType)) {
           if (Platform.isAndroid) {
             final EngineState? state = await FlutterPowerFilePreview.engineState();
             if (state == EngineState.done) {
-              return PerviewType.done;
+              return PreviewType.done;
             } else if (state == EngineState.error) {
-              return PerviewType.engineFail;
+              return PreviewType.engineFail;
             } else {
               FlutterPowerFilePreview.engineInitStream.listen((EngineState e) async {
                 if (e == EngineState.done) {
@@ -134,19 +134,19 @@ class _LocalFilePreviewWidgetState extends State<LocalFilePreviewWidget> {
                 }
               });
 
-              return PerviewType.engineLoading;
+              return PreviewType.engineLoading;
             }
           } else {
-            return PerviewType.done;
+            return PreviewType.done;
           }
         } else {
-          return PerviewType.unsupportedType;
+          return PreviewType.unsupportedType;
         }
       } else {
-        return PerviewType.nonExistent;
+        return PreviewType.nonExistent;
       }
     } else {
-      return PerviewType.unsupportedPlatform;
+      return PreviewType.unsupportedPlatform;
     }
   }
 
