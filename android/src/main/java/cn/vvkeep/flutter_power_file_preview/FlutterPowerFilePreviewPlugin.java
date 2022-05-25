@@ -1,6 +1,7 @@
 package cn.vvkeep.flutter_power_file_preview;
 
 
+import android.app.Activity;
 import android.content.Context;
 
 import androidx.annotation.NonNull;
@@ -27,6 +28,7 @@ public class FlutterPowerFilePreviewPlugin implements FlutterPlugin, MethodCallH
   private FlutterPluginBinding pluginBinding;
   //  0 未加载状态  1开始 10 完成 11 错误 20 下载完成 21 下载失败 22 下载中 30 安装成功 31 安装失败
   private int engineState = 0;
+  private Activity activity;
 
 
   private void init(Context context, BinaryMessenger messenger) {
@@ -43,7 +45,12 @@ public class FlutterPowerFilePreviewPlugin implements FlutterPlugin, MethodCallH
       TBSManager.getInstance().initTBS(context, new TBSManager.OnInitListener() {
         @Override
         public void onInit(int status) {
-          channel.invokeMethod("engineState",status);
+          activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+              channel.invokeMethod("engineState",status);
+            }
+          });
         }
       });
     }
@@ -66,8 +73,8 @@ public class FlutterPowerFilePreviewPlugin implements FlutterPlugin, MethodCallH
 
   @Override
   public void onAttachedToActivity(@NonNull ActivityPluginBinding binding) {
+    activity=binding.getActivity();
     init(pluginBinding.getApplicationContext(), pluginBinding.getBinaryMessenger());
-
     pluginBinding.getPlatformViewRegistry().registerViewFactory(viewName,
             new PowerFilePreviewFactory(pluginBinding.getBinaryMessenger(),
                     binding.getActivity(), this));
