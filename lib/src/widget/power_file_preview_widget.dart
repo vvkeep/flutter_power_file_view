@@ -2,11 +2,11 @@ import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_power_file_preview/flutter_power_file_preview.dart';
-import 'package:flutter_power_file_preview/src/constant/constant.dart';
 import 'package:flutter_power_file_preview/src/enum/download_state.dart';
-import 'package:flutter_power_file_preview/src/enum/perview_type.dart';
+import 'package:flutter_power_file_preview/src/enum/preview_type.dart';
 import 'package:flutter_power_file_preview/src/i18n/power_localizations.dart';
 import 'package:flutter_power_file_preview/src/utils/file_util.dart';
+import 'package:flutter_power_file_preview/src/widget/local_file_preview_widget.dart';
 
 class PowerFilePreviewWidget extends StatefulWidget {
   /// Download link for file
@@ -43,7 +43,7 @@ class _PowerFilePreviewWidgetState extends State<PowerFilePreviewWidget> {
   /// File size
   String fileSize = '';
 
-  PerviewType viewType = PerviewType.none;
+  PreviewType viewType = PreviewType.none;
 
   final CancelToken cancelToken = CancelToken();
 
@@ -67,7 +67,7 @@ class _PowerFilePreviewWidgetState extends State<PowerFilePreviewWidget> {
 
   @override
   Widget build(BuildContext context) {
-    if (viewType == PerviewType.done) {
+    if (viewType == PreviewType.done) {
       return _buildBodyWidget();
     } else {
       return _buildPlaceholderWidget();
@@ -84,74 +84,15 @@ class _PowerFilePreviewWidgetState extends State<PowerFilePreviewWidget> {
   }
 
   Widget _buildBodyWidget() {
-    return Column(
-      children: <Widget>[
-        centerWidget(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: _buildTopWidget(),
-          ),
-        ),
-        centerWidget(
-          child: progressValue > 0 ? _buildProgressWidget() : _buildButtonWidget(),
-        ),
-      ],
-    );
-  }
-
-  List<Widget> _buildTopWidget() {
-    return <Widget>[
-      Image.asset(fileTypeImage, package: Constants.packageName, width: 48, height: 48),
-      Container(
-        margin: const EdgeInsets.only(top: 40.0, bottom: 10.0),
-        padding: const EdgeInsets.symmetric(horizontal: 20.0),
-        child: Text(
-          fileName,
-          textAlign: TextAlign.center,
-          style: Theme.of(context).textTheme.bodyText1?.copyWith(fontWeight: FontWeight.bold),
-        ),
-      ),
-      Text(
-        fileSize,
-        style: Theme.of(context).textTheme.bodyText2,
-      ),
-    ];
-  }
-
-  Widget _buildButtonWidget() {
-    final double screenWidth = MediaQuery.of(context).size.width;
-    double defaultWidth = screenWidth / 3;
-    defaultWidth = defaultWidth < 120 ? 120 : defaultWidth;
-    double defaultHeight = defaultWidth / 3;
-    defaultHeight = defaultHeight < 40 ? 40 : defaultHeight;
-
-    final Size size = Size(defaultWidth, defaultHeight);
-
-    return ElevatedButton(
-      onPressed: () async => isDownload ? download() : widget.onViewPressed.call(),
-      style: ButtonStyle(
-        foregroundColor: MaterialStateProperty.resolveWith((Set<MaterialState> states) {
-          return Colors.white;
-        }),
-        backgroundColor: MaterialStateProperty.resolveWith((Set<MaterialState> states) {
-          // 当按钮无法点击时 设置背景色
-          if (states.contains(MaterialState.disabled)) {
-            return Colors.grey[350];
-          } else {
-            return Theme.of(context).primaryColor;
-          }
-        }),
-        minimumSize: MaterialStateProperty.all(size),
-      ),
-      child: Text(btnName),
+    return centerWidget(
+      child: progressValue > 0 ? _buildProgressWidget() : LocalFilePreviewWidget(filePath: widget.downloadPath),
     );
   }
 
   Widget _buildProgressWidget() {
-    final double size = 60.0;
     return SizedBox(
-      width: size,
-      height: size,
+      width: 60.0,
+      height: 60.0,
       child: CircularProgressIndicator(
         value: progressValue,
         strokeWidth: 6.0,
@@ -203,50 +144,12 @@ class _PowerFilePreviewWidgetState extends State<PowerFilePreviewWidget> {
     setState(() {
       if (mounted) {
         fileSize = size ?? '';
-        viewType = PerviewType.done;
+        viewType = PreviewType.done;
       }
     });
-  }
-
-  String get btnName {
-    return isDownload ? local.downloadTitle : local.viewTitle;
-  }
-
-  String get fileTypeImage {
-    String type = 'assets/images/';
-
-    switch (fileType) {
-      case 'doc':
-      case 'docx':
-        type += 'ic_file_doc.png';
-        break;
-      case 'xls':
-      case 'xlsx':
-        type += 'ic_file_xls.png';
-        break;
-      case 'ppt':
-      case 'pptx':
-        type += 'ic_file_ppt.png';
-        break;
-      case 'txt':
-        type += 'ic_file_txt.png';
-        break;
-      case 'pdf':
-        type += 'ic_file_pdf.png';
-        break;
-      default:
-        type += 'ic_file_other.png';
-        break;
-    }
-
-    return type;
   }
 
   String get fileLink => widget.downloadUrl;
 
   String get filePath => widget.downloadPath;
-
-  String get fileName => FileUtil.getFileName(fileLink);
-
-  String get fileType => FileUtil.getFileType(fileLink);
 }
