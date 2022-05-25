@@ -1,5 +1,5 @@
 name: flutter_power_file_preview
-description: A local file view widget, support a variety of file types, such as Doc Eexcl PPT TXT PDF and so on, Android is implemented by Tencent X5, iOS is implemented by WKWebView
+description: A powerful file view widget, support a variety of file types, such as Doc Eexcl PPT TXT PDF and so on, Android is implemented by Tencent X5, iOS is implemented by WKWebView
 version: 0.0.1
 homepage: https://github.com/vvkeep/flutter_power_file_preview
 
@@ -10,6 +10,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  dio: ^4.0.0
 
 dev_dependencies:
   flutter_test:
