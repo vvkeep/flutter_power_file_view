@@ -1,12 +1,12 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_power_file_preview/flutter_power_file_preview.dart';
+import 'package:flutter_power_file_preview/src/flutter_power_file_preview.dart';
 import 'package:flutter_power_file_preview/src/enum/download_state.dart';
 import 'package:flutter_power_file_preview/src/enum/preview_type.dart';
 import 'package:flutter_power_file_preview/src/i18n/power_localizations.dart';
 import 'package:flutter_power_file_preview/src/utils/file_util.dart';
-import 'package:flutter_power_file_preview/src/widget/local_file_preview_widget.dart';
+import 'package:flutter_power_file_preview/src/widget/file_preview_widget.dart';
 
 class PowerFilePreviewWidget extends StatefulWidget {
   /// Download link for file
@@ -80,7 +80,7 @@ class _PowerFilePreviewWidgetState extends State<PowerFilePreviewWidget> {
 
   Widget _buildBodyWidget() {
     return centerWidget(
-      child: progressValue > 0 ? _buildProgressWidget() : LocalFilePreviewWidget(filePath: widget.downloadPath),
+      child: progressValue > 0 ? _buildProgressWidget() : FilePreviewWidget(filePath: widget.downloadPath),
     );
   }
 

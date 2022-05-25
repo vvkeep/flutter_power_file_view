@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_power_file_preview/src/widget/power_file_preview_widget.dart';
+import 'package:flutter_power_file_preview/flutter_power_file_preview.dart';
 
 class PreviewFilePage extends StatefulWidget {
   final String downloadUrl;

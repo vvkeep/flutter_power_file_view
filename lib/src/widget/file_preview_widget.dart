@@ -10,17 +10,17 @@ import 'package:flutter_power_file_preview/src/enum/preview_type.dart';
 import 'package:flutter_power_file_preview/src/i18n/power_localizations.dart';
 import 'package:flutter_power_file_preview/src/utils/file_util.dart';
 
-class LocalFilePreviewWidget extends StatefulWidget {
+class FilePreviewWidget extends StatefulWidget {
   /// Path to local file
   final String filePath;
 
-  const LocalFilePreviewWidget({Key? key, required this.filePath}) : super(key: key);
+  const FilePreviewWidget({Key? key, required this.filePath}) : super(key: key);
 
   @override
-  State<LocalFilePreviewWidget> createState() => _LocalFilePreviewWidgetState();
+  State<FilePreviewWidget> createState() => _FilePreviewWidgetState();
 }
 
-class _LocalFilePreviewWidgetState extends State<LocalFilePreviewWidget> {
+class _FilePreviewWidgetState extends State<FilePreviewWidget> {
   late PowerLocalizations local = PowerLocalizations.of(context);
 
   @override
