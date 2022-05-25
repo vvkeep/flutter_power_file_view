@@ -1,5 +1,5 @@
-/// PerviewType
-enum PerviewType {
+/// PreviewType
+enum PreviewType {
   /// Not initialized
   none,
 
