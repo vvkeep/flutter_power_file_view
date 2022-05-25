@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_power_file_preview/flutter_power_file_preview.dart';
+import 'package:flutter_power_file_preview/src/flutter_power_file_preview.dart';
 import 'package:flutter_power_file_preview/src/constant/constant.dart';
 import 'package:flutter_power_file_preview/src/enum/engine_state.dart';
 import 'package:flutter_power_file_preview/src/enum/preview_type.dart';

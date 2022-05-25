@@ -1,4 +1,4 @@
-package com.example.flutter_power_file_preview;
+package cn.vvkeep.flutter_power_file_preview;
 
 import androidx.annotation.NonNull;
 

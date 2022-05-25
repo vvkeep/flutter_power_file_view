@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'dart:convert';
-import 'package:flutter_power_file_preview/flutter_power_file_preview.dart';
-import 'package:flutter_power_file_preview_example/preview_file_page.dart';
 import 'package:path_provider/path_provider.dart';
+import 'preview_file_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -17,7 +16,9 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  List<String> files = [];
+  List<String> files = [
+    "https://google-developer-training.github.io/android-developer-fundamentals-course-concepts/en/android-developer-fundamentals-course-concepts-en.pdf"
+  ];
 
   @override
   void initState() {
