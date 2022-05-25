@@ -21,6 +21,9 @@ class FlutterPowerFilePreview {
   static final _engineInitController = StreamController<EngineState>.broadcast();
   static Stream<EngineState> get engineInitStream => _engineInitController.stream;
 
+  static final _engineDownloadProgressController = StreamController<int>.broadcast();
+  static Stream<int> get engineDownloadStream => _engineDownloadProgressController.stream;
+
   static Future<String?> get platformVersion async {
     final String? version = await _channel.invokeMethod('getPlatformVersion');
     return version;
@@ -92,6 +95,9 @@ class FlutterPowerFilePreview {
     switch (call.method) {
       case 'engineState':
         _engineInitController.add(EngineStateExtension.getType(call.arguments as int));
+        break;
+      case 'engineDownloadProgress':
+        _engineDownloadProgressController.add(call.arguments as int);
         break;
       default:
         break;

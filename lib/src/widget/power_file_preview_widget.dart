@@ -16,15 +16,10 @@ class PowerFilePreviewWidget extends StatefulWidget {
   /// The file storage address is used to determine whether the file can be downloaded
   final String downloadPath;
 
-  /// File viewing function
-  /// Will be removed in future releases
-  final VoidCallback onViewPressed;
-
   const PowerFilePreviewWidget({
     Key? key,
     required this.downloadUrl,
     required this.downloadPath,
-    required this.onViewPressed,
   }) : super(key: key);
 
   @override
