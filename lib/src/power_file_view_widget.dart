@@ -37,7 +37,7 @@ class _PowerFileViewWidgetState extends State<PowerFileViewWidget> {
   /// File size
   String fileSize = '';
 
-  PreviewType viewType = PreviewType.done;
+  PowerViewType viewType = PowerViewType.done;
   DownloadState downloadState = DownloadState.none;
 
   final CancelToken cancelToken = CancelToken();
@@ -51,7 +51,7 @@ class _PowerFileViewWidgetState extends State<PowerFileViewWidget> {
         getViewType();
       });
     } else {
-      viewType = PreviewType.done;
+      viewType = PowerViewType.done;
       downloadState = DownloadState.done;
       setState(() {});
     }
@@ -68,7 +68,7 @@ class _PowerFileViewWidgetState extends State<PowerFileViewWidget> {
 
   @override
   Widget build(BuildContext context) {
-    if (viewType == PreviewType.done) {
+    if (viewType == PowerViewType.done) {
       return _buildBodyWidget();
     } else {
       return _buildPlaceholderWidget();
@@ -149,7 +149,7 @@ class _PowerFileViewWidgetState extends State<PowerFileViewWidget> {
     setState(() {
       if (mounted) {
         fileSize = size ?? '';
-        viewType = PreviewType.done;
+        viewType = PowerViewType.done;
       }
     });
 

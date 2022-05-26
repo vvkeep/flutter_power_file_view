@@ -1,5 +1,5 @@
-/// PreviewType
-enum PreviewType {
+/// PowerViewType
+enum PowerViewType {
   /// Not initialized
   none,
 

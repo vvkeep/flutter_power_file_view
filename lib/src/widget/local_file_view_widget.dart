@@ -26,29 +26,29 @@ class _LocalFileViewWidgetState extends State<LocalFileViewWidget> {
   Widget build(BuildContext context) {
     final viewType = getViewType();
     debugPrint("viewType: ${viewType.toString()}");
-    return FutureBuilder<PreviewType>(
+    return FutureBuilder<PowerViewType>(
       future: viewType,
-      initialData: PreviewType.none,
-      builder: (BuildContext context, AsyncSnapshot<PreviewType> snapshot) {
+      initialData: PowerViewType.none,
+      builder: (BuildContext context, AsyncSnapshot<PowerViewType> snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
-          switch (snapshot.data ?? PreviewType.none) {
-            case PreviewType.unsupportedPlatform:
+          switch (snapshot.data ?? PowerViewType.none) {
+            case PowerViewType.unsupportedPlatform:
               return _buildUnSupportPlatformWidget();
-            case PreviewType.nonExistent:
+            case PowerViewType.nonExistent:
               return _buildNonexistentWidget();
-            case PreviewType.unsupportedType:
+            case PowerViewType.unsupportedType:
               return _buildUnsupportTypeWidget();
-            case PreviewType.engineLoading:
+            case PowerViewType.engineLoading:
               return _buildEngineLoadingWidget();
-            case PreviewType.engineFail:
+            case PowerViewType.engineFail:
               return _buildEngineFailWidget();
-            case PreviewType.done:
+            case PowerViewType.done:
               if (Platform.isAndroid) {
                 return _createAndroidView();
               } else {
                 return _createIOSView();
               }
-            case PreviewType.none:
+            case PowerViewType.none:
               return _buildPlaceholderWidget();
           }
         }
@@ -115,16 +115,16 @@ class _LocalFileViewWidgetState extends State<LocalFileViewWidget> {
   }
 
   /// Display different layouts by changing status
-  Future<PreviewType> getViewType() async {
+  Future<PowerViewType> getViewType() async {
     if (Platform.isAndroid || Platform.isIOS) {
       if (FileUtil.isExistsFile(filePath)) {
         if (FileUtil.isSupportOpen(fileType)) {
           if (Platform.isAndroid) {
             final EngineState? state = await PowerFileViewManager.engineState();
             if (state == EngineState.done) {
-              return PreviewType.done;
+              return PowerViewType.done;
             } else if (state == EngineState.error) {
-              return PreviewType.engineFail;
+              return PowerViewType.engineFail;
             } else {
               PowerFileViewManager.engineInitStream.listen((EngineState e) async {
                 if (e == EngineState.done) {
@@ -135,19 +135,19 @@ class _LocalFileViewWidgetState extends State<LocalFileViewWidget> {
                 }
               });
 
-              return PreviewType.engineLoading;
+              return PowerViewType.engineLoading;
             }
           } else {
-            return PreviewType.done;
+            return PowerViewType.done;
           }
         } else {
-          return PreviewType.unsupportedType;
+          return PowerViewType.unsupportedType;
         }
       } else {
-        return PreviewType.nonExistent;
+        return PowerViewType.nonExistent;
       }
     } else {
-      return PreviewType.unsupportedPlatform;
+      return PowerViewType.unsupportedPlatform;
     }
   }
 

@@ -28,12 +28,18 @@ class PowerFileViewManager {
     return version;
   }
 
+  /// Initialize the engine, this method is only valid for the Andorid platform, iOS does not need to call
+  ///
+  /// 初始化引擎，此方法只针对Andorid平台有效，iOS无需调用
   static Future<void> initEngine() async {
     if (!Platform.isAndroid) return;
     _channel.setMethodCallHandler(_handler);
     await _channel.invokeMethod<bool?>('initEngine');
   }
 
+  /// Get the engine status in real time, this method is only valid for Andorid platform, iOS does not need to call
+  ///
+  /// 实时获取引擎状态，此方法只针对Andorid平台有效，iOS无需调用
   static Future<EngineState?> engineState() async {
     if (Platform.isAndroid) {
       final int? i = await _channel.invokeMethod<int>('getEngineState');
