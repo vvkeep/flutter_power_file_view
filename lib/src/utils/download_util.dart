@@ -1,9 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
 import 'package:power_file_view/src/constant/enums.dart';
-import 'package:power_file_view/src/i18n/power_localizations.dart';
-
-import 'file_util.dart';
 
 class DownloadUtil {
   static Dio _dio() {
@@ -51,8 +47,7 @@ class DownloadUtil {
   }
 
   /// Get file size through network link
-  static Future<String?> fileSize(
-    BuildContext context,
+  static Future<int?> fileSize(
     String fileUrl, {
     dynamic data,
     Map<String, dynamic>? queryParameters,
@@ -62,8 +57,6 @@ class DownloadUtil {
     String? fileSizeErrorTip,
     String? fileSizeFailTip,
   }) async {
-    final PowerLocalizations local = PowerLocalizations.of(context);
-
     try {
       final Response<dynamic> response = await _dio().head<dynamic>(
         fileUrl,
@@ -83,12 +76,12 @@ class DownloadUtil {
       });
 
       if (response.headers.toString().contains('content-length')) {
-        return '${fileSizeTip ?? local.fileSize}${FileUtil.fileSize(size)}';
+        return size;
       } else {
-        return fileSizeFailTip ?? local.fileSizeFail;
+        return null;
       }
     } catch (e) {
-      return fileSizeErrorTip ?? local.fileSizeError;
+      return null;
     }
   }
 }

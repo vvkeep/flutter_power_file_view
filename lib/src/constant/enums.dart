@@ -18,6 +18,10 @@ enum PowerViewType {
   /// X5 Initialization failed
   engineFail,
 
+  fileLoading,
+
+  fileFail,
+
   /// Successfully opened file
   done
 }

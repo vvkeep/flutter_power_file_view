@@ -31,6 +31,7 @@ class PowerFileViewManager {
   /// Initialize the engine, this method is only valid for the Andorid platform, iOS does not need to call
   ///
   /// 初始化引擎，此方法只针对Andorid平台有效，iOS无需调用
+  /// 1. 判断手机是是否加载陈宫
   static Future<void> initEngine() async {
     if (!Platform.isAndroid) return;
     _channel.setMethodCallHandler(_handler);
@@ -74,8 +75,7 @@ class PowerFileViewManager {
         options: options,
       );
 
-  static Future<String?> getFileSize(
-    BuildContext context,
+  static Future<int?> getFileSize(
     String fileUrl, {
     dynamic data,
     Map<String, dynamic>? queryParameters,
@@ -86,7 +86,6 @@ class PowerFileViewManager {
     String? fileSizeErrorTip,
   }) async =>
       DownloadUtil.fileSize(
-        context,
         fileUrl,
         data: data,
         queryParameters: queryParameters,
@@ -101,7 +100,7 @@ class PowerFileViewManager {
     switch (call.method) {
       case 'engineState':
         final engineStateRawValue = call.arguments as int;
-        debugPrint('engineStateb callback: $engineStateRawValue');
+        debugPrint('engineState callback: $engineStateRawValue');
         _engineInitController.add(EngineStateExtension.getType(engineStateRawValue));
         break;
       case 'engineDownloadProgress':
