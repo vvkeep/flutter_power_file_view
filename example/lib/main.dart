@@ -5,11 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:power_file_view/power_file_view.dart';
 
+import 'permission_util.dart';
 import 'preview_file_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  FlutterPowerFilePreview.initEngine();
+  PowerFileViewManager.initEngine();
   runApp(const MyApp());
 }
 
@@ -82,13 +83,16 @@ class HomePage extends StatelessWidget {
   }
 
   Future onNetworkTap(BuildContext context, String title, String type, String downloadUrl) async {
-    String filePath = await setFilePath(type, title);
-    Navigator.of(context).push(MaterialPageRoute(builder: (ctx) {
-      return PreviewFilePage(
-        downloadUrl: downloadUrl,
-        downloadPath: filePath,
-      );
-    }));
+    bool isGranted = await PermissionUtil.checkPhotos();
+    if (isGranted) {
+      String filePath = await setFilePath(type, title);
+      Navigator.of(context).push(MaterialPageRoute(builder: (ctx) {
+        return PreviewFilePage(
+          downloadUrl: downloadUrl,
+          downloadPath: filePath,
+        );
+      }));
+    }
   }
 
   Future setFilePath(String type, String assetPath) async {

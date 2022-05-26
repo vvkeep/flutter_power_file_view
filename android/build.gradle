@@ -1,4 +1,4 @@
-group 'com.example.power_file_view'
+group 'com.example.flutter_power_file_preview'
 version '1.0'
 
 buildscript {
@@ -32,4 +32,17 @@ android {
     defaultConfig {
         minSdkVersion 16
     }
+
+    buildTypes {
+        release {
+            consumerProguardFiles 'proguard-rules.pro'
+        }
+        debug {
+            consumerProguardFiles 'proguard-rules.pro'
+        }
+    }
+}
+dependencies {
+    implementation 'com.tencent.tbs:tbssdk:44181'
+//    api fileTree(include: ['*.jar'], dir: 'libs')
 }

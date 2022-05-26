@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_power_file_preview/flutter_power_file_preview.dart';
+import 'package:power_file_view/power_file_view.dart';
 
 class PreviewFilePage extends StatefulWidget {
   final String downloadUrl;
@@ -23,9 +23,9 @@ class _PreviewFilePageState extends State<PreviewFilePage> {
         elevation: 0,
         iconTheme: const IconThemeData(color: Colors.black),
       ),
-      body: PowerFilePreviewWidget(
+      body: PowerFileViewWidget(
         downloadUrl: widget.downloadUrl,
-        downloadPath: widget.downloadPath,
+        filePath: widget.downloadPath,
       ),
     );
   }
