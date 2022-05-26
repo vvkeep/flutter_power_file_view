@@ -41,7 +41,10 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<String> files = [
-      "https://google-developer-training.github.io/android-developer-fundamentals-course-concepts/en/android-developer-fundamentals-course-concepts-en.pdf"
+      "https://google-developer-training.github.io/android-developer-fundamentals-course-concepts/en/android-developer-fundamentals-course-concepts-en.pdf",
+      "http://192.168.33.71:9000/lianyi/upload/2022-05-19/7d58293e876568de01606286d102586e.pdf",
+      "http://192.168.33.71:9000/lianyi/upload/2022-05-05/aed604ec9c58e905f132faf54d5aeb5e.xls",
+      "http://192.168.33.71:9000/lianyi/upload/2022-05-05/af06c71a90a8d38b0e59586a56235800.xlsx",
     ];
     return Scaffold(
       appBar: AppBar(

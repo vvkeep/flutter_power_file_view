@@ -86,7 +86,6 @@ public class TBSManager {
                 Log.e("QbSdk", "onDownloadProgress -->下载X5内核进度：" + i);
                 engineState = EngineState.downloading;
                 if (onInitListener != null) {
-                    onInitListener.onInit(engineState);
                     onInitListener.onDownload(i);
                 }
             }
