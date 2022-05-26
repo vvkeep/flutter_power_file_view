@@ -39,15 +39,15 @@ class _PowerFileViewWidgetState extends State<PowerFileViewWidget> {
       downloadUrl: widget.downloadUrl,
       filePath: widget.filePath,
       viewTypeChanged: (type) {
-        updatePowerViewType(viewType: type);
+        updatePowerViewType(type: type);
       },
     );
 
     updatePowerViewType();
   }
 
-  void updatePowerViewType({PowerViewType? viewType}) async {
-    final tempViewType = viewType ?? await _viewModel.getViewType;
+  void updatePowerViewType({PowerViewType? type}) async {
+    final tempViewType = type ?? await _viewModel.getViewType;
     setState(() {
       viewType = tempViewType;
     });

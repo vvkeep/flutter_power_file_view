@@ -45,7 +45,11 @@ class HomePage extends StatelessWidget {
     ];
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Plugin example app'),
+        backgroundColor: Colors.white,
+        title: const Text(
+          'Plugin example app',
+          style: TextStyle(color: Colors.black),
+        ),
       ),
       body: ListView.builder(
           itemCount: files.length,
@@ -72,8 +76,8 @@ class HomePage extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 15.0),
               child: ElevatedButton(
                 onPressed: () async {
-                  String tempfilePath = await setFilePath(type, title);
-                  onNetworkTap(context, title, type, filePath);
+                  String savePath = await setFilePath(type, title);
+                  onNetworkTap(context, title, type, filePath, savePath);
                 },
                 child: Text(fileShowText),
               ),
@@ -82,14 +86,13 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Future onNetworkTap(BuildContext context, String title, String type, String downloadUrl) async {
+  Future onNetworkTap(BuildContext context, String title, String type, String downloadUrl, String downloadPath) async {
     bool isGranted = await PermissionUtil.checkPhotos();
     if (isGranted) {
-      String filePath = await setFilePath(type, title);
       Navigator.of(context).push(MaterialPageRoute(builder: (ctx) {
         return PreviewFilePage(
           downloadUrl: downloadUrl,
-          downloadPath: filePath,
+          downloadPath: downloadPath,
         );
       }));
     }

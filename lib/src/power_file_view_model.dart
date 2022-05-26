@@ -41,6 +41,7 @@ class PowerFileViewModel {
         return PowerViewType.engineFail;
       }
 
+      debugPrint('get engineState: ${EngineStateExtension.description(state)}');
       switch (state) {
         case EngineState.done:
           return _viewTypeByLoadFile;

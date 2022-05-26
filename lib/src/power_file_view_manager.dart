@@ -44,7 +44,6 @@ class PowerFileViewManager {
   static Future<EngineState?> engineState() async {
     if (Platform.isAndroid) {
       final int? i = await _channel.invokeMethod<int>('getEngineState');
-      debugPrint('getEngineState: ${i ?? -1}');
       return EngineStateExtension.getType(i ?? -1);
     }
     return null;
@@ -99,9 +98,9 @@ class PowerFileViewManager {
   static Future<void> _handler(MethodCall call) async {
     switch (call.method) {
       case 'engineState':
-        final engineStateRawValue = call.arguments as int;
-        debugPrint('engineState callback: $engineStateRawValue');
-        _engineInitController.add(EngineStateExtension.getType(engineStateRawValue));
+        final type = EngineStateExtension.getType(call.arguments as int);
+        debugPrint('engineState callback: ${EngineStateExtension.description(type)}');
+        _engineInitController.add(type);
         break;
       case 'engineDownloadProgress':
         _engineDownloadProgressController.add(call.arguments as int);
