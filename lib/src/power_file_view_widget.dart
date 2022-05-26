@@ -1,10 +1,9 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:power_file_view/src/enum/download_state.dart';
-import 'package:power_file_view/src/enum/preview_type.dart';
+import 'package:power_file_view/src/constant/enums.dart';
 import 'package:power_file_view/src/i18n/power_localizations.dart';
-import 'package:power_file_view/src/power_file_view.dart';
+import 'package:power_file_view/src/power_file_view_manager.dart';
 import 'package:power_file_view/src/utils/file_util.dart';
 import 'package:power_file_view/src/widget/local_file_view_widget.dart';
 
@@ -114,7 +113,7 @@ class _PowerFileViewWidgetState extends State<PowerFileViewWidget> {
   /// Download
   Future<DownloadState> download() async {
     downloadState = DownloadState.downloading;
-    await PowerFileView.downloadFile(
+    await PowerFileViewManager.downloadFile(
       fileLink,
       filePath,
       callback: (DownloadState state) {
@@ -141,7 +140,7 @@ class _PowerFileViewWidgetState extends State<PowerFileViewWidget> {
 
   /// Display different layouts by changing state
   Future<void> getViewType() async {
-    final String? size = await PowerFileView.getFileSize(
+    final String? size = await PowerFileViewManager.getFileSize(
       context,
       fileLink,
       cancelToken: cancelToken,

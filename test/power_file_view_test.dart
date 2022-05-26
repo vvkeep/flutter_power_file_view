@@ -18,6 +18,6 @@ void main() {
   });
 
   test('getPlatformVersion', () async {
-    expect(await PowerFileView.platformVersion, '42');
+    expect(await PowerFileViewManager.platformVersion, '42');
   });
 }

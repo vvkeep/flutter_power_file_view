@@ -9,13 +9,12 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:power_file_view/src/enum/download_state.dart';
-import 'package:power_file_view/src/enum/engine_state.dart';
+import 'package:power_file_view/src/constant/enums.dart';
 import 'package:power_file_view/src/utils/download_util.dart';
 
-import 'constant/constant.dart';
+import 'constant/constants.dart';
 
-class PowerFileView {
+class PowerFileViewManager {
   static const MethodChannel _channel = MethodChannel(Constants.channelName);
 
   static final _engineInitController = StreamController<EngineState>.broadcast();

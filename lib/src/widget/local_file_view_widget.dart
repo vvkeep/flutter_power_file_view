@@ -3,11 +3,10 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:power_file_view/src/constant/constant.dart';
-import 'package:power_file_view/src/enum/engine_state.dart';
-import 'package:power_file_view/src/enum/preview_type.dart';
+import 'package:power_file_view/src/constant/constants.dart';
+import 'package:power_file_view/src/constant/enums.dart';
 import 'package:power_file_view/src/i18n/power_localizations.dart';
-import 'package:power_file_view/src/power_file_view.dart';
+import 'package:power_file_view/src/power_file_view_manager.dart';
 import 'package:power_file_view/src/utils/file_util.dart';
 
 class LocalFileViewWidget extends StatefulWidget {
@@ -121,17 +120,17 @@ class _LocalFileViewWidgetState extends State<LocalFileViewWidget> {
       if (FileUtil.isExistsFile(filePath)) {
         if (FileUtil.isSupportOpen(fileType)) {
           if (Platform.isAndroid) {
-            final EngineState? state = await PowerFileView.engineState();
+            final EngineState? state = await PowerFileViewManager.engineState();
             if (state == EngineState.done) {
               return PreviewType.done;
             } else if (state == EngineState.error) {
               return PreviewType.engineFail;
             } else {
-              PowerFileView.engineInitStream.listen((EngineState e) async {
+              PowerFileViewManager.engineInitStream.listen((EngineState e) async {
                 if (e == EngineState.done) {
                   setState(() {});
                 } else {
-                  await PowerFileView.initEngine();
+                  await PowerFileViewManager.initEngine();
                   setState(() {});
                 }
               });
