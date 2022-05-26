@@ -38,6 +38,7 @@ class FlutterPowerFilePreview {
   static Future<EngineState?> engineState() async {
     if (Platform.isAndroid) {
       final int? i = await _channel.invokeMethod<int>('getEngineState');
+      debugPrint('getEngineState: ${i ?? -1}');
       return EngineStateExtension.getType(i ?? -1);
     }
     return null;
@@ -94,7 +95,9 @@ class FlutterPowerFilePreview {
   static Future<void> _handler(MethodCall call) async {
     switch (call.method) {
       case 'engineState':
-        _engineInitController.add(EngineStateExtension.getType(call.arguments as int));
+        final engineStateRawValue = call.arguments as int;
+        debugPrint('engineStateb callback: $engineStateRawValue');
+        _engineInitController.add(EngineStateExtension.getType(engineStateRawValue));
         break;
       case 'engineDownloadProgress':
         _engineDownloadProgressController.add(call.arguments as int);

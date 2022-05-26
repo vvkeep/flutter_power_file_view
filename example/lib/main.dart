@@ -2,11 +2,14 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_power_file_preview/flutter_power_file_preview.dart';
 import 'package:path_provider/path_provider.dart';
 
 import 'preview_file_page.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  FlutterPowerFilePreview.initEngine();
   runApp(const MyApp());
 }
 
@@ -69,7 +72,7 @@ class HomePage extends StatelessWidget {
               child: ElevatedButton(
                 onPressed: () async {
                   String tempfilePath = await setFilePath(type, title);
-                  onNetworkTap(context, title, type, tempfilePath);
+                  onNetworkTap(context, title, type, filePath);
                 },
                 child: Text(fileShowText),
               ),

@@ -25,8 +25,10 @@ class _FilePreviewWidgetState extends State<FilePreviewWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final viewType = getViewType();
+    debugPrint("viewType: ${viewType.toString()}");
     return FutureBuilder<PreviewType>(
-      future: getViewType(),
+      future: viewType,
       initialData: PreviewType.none,
       builder: (BuildContext context, AsyncSnapshot<PreviewType> snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {

@@ -49,7 +49,7 @@ public class PowerFilePreview implements PlatformView {
     }
 
     private void openFile() {
-        if (isSupportFile(filePath)) {
+        // if (isSupportFile(filePath)) {
             //增加下面一句解决没有TbsReaderTemp文件夹存在导致加载文件失败
             File bsReaderTempFile = new File(tempPath);
             if (!bsReaderTempFile.exists()) {
@@ -63,7 +63,7 @@ public class PowerFilePreview implements PlatformView {
             localBundle.putBoolean("is_bar_animating", false);
             localBundle.putString("tempPath", tempPath);
             readerView.openFile(localBundle);
-        }
+        // }
 
     }
 

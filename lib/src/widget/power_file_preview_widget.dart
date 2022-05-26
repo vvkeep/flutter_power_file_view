@@ -38,17 +38,26 @@ class _PowerFilePreviewWidgetState extends State<PowerFilePreviewWidget> {
   /// File size
   String fileSize = '';
 
-  PreviewType viewType = PreviewType.none;
+  PreviewType viewType = PreviewType.done;
+  DownloadState downloadState = DownloadState.none;
 
   final CancelToken cancelToken = CancelToken();
 
   @override
   void initState() {
     super.initState();
+    debugPrint('downloadUrl: ${widget.downloadUrl}, downloadPath: ${widget.downloadPath}');
+    if (isDownload) {
+      Future<void>.delayed(Duration.zero, () {
+        getViewType();
+      });
+    }  else {
+      viewType = PreviewType.done;
+      downloadState = DownloadState.done;
+      setState(() {
 
-    Future<void>.delayed(Duration.zero, () {
-      getViewType();
-    });
+      });
+    }
   }
 
   @override
@@ -79,9 +88,12 @@ class _PowerFilePreviewWidgetState extends State<PowerFilePreviewWidget> {
   }
 
   Widget _buildBodyWidget() {
-    return centerWidget(
-      child: progressValue > 0 ? _buildProgressWidget() : FilePreviewWidget(filePath: widget.downloadPath),
-    );
+    debugPrint("_buildBodyWidget downloadState: $downloadState");
+    if (downloadState == DownloadState.done) {
+      return FilePreviewWidget(filePath: widget.downloadPath);
+    } else {
+      return Center(child: _buildProgressWidget(),);
+    }
   }
 
   Widget _buildProgressWidget() {
@@ -99,12 +111,9 @@ class _PowerFilePreviewWidgetState extends State<PowerFilePreviewWidget> {
     );
   }
 
-  Widget centerWidget({required Widget child}) {
-    return Expanded(child: Center(child: child));
-  }
-
   /// Download
   Future<DownloadState> download() async {
+    downloadState = DownloadState.downloading;
     await FlutterPowerFilePreview.downloadFile(
       fileLink,
       filePath,
@@ -125,7 +134,9 @@ class _PowerFilePreviewWidgetState extends State<PowerFilePreviewWidget> {
       },
       cancelToken: cancelToken,
     );
-    return DownloadState.none;
+
+    downloadState = DownloadState.done;
+    return downloadState;
   }
 
   /// Display different layouts by changing state
@@ -141,6 +152,13 @@ class _PowerFilePreviewWidgetState extends State<PowerFilePreviewWidget> {
         fileSize = size ?? '';
         viewType = PreviewType.done;
       }
+    });
+
+    debugPrint("download file size: $size .....");
+    await download();
+
+    setState(() {
+
     });
   }
 
