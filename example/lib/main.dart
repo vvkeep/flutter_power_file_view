@@ -2,8 +2,8 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_power_file_preview/flutter_power_file_preview.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:power_file_view/power_file_view.dart';
 
 import 'preview_file_page.dart';
 

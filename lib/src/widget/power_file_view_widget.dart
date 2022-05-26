@@ -1,14 +1,14 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:power_file_view/src/power_file_view.dart';
 import 'package:power_file_view/src/enum/download_state.dart';
 import 'package:power_file_view/src/enum/preview_type.dart';
 import 'package:power_file_view/src/i18n/power_localizations.dart';
+import 'package:power_file_view/src/power_file_view.dart';
 import 'package:power_file_view/src/utils/file_util.dart';
-import 'package:power_file_view/src/widget/file_preview_widget.dart';
+import 'package:power_file_view/src/widget/local_file_view_widget.dart';
 
-class PowerFilePreviewWidget extends StatefulWidget {
+class PowerFileViewWidget extends StatefulWidget {
   /// Download link for file
   /// [downloadUrl] will be used to obtain the file name and type
   final String downloadUrl;
@@ -16,17 +16,17 @@ class PowerFilePreviewWidget extends StatefulWidget {
   /// The file storage address is used to determine whether the file can be downloaded
   final String downloadPath;
 
-  const PowerFilePreviewWidget({
+  const PowerFileViewWidget({
     Key? key,
     required this.downloadUrl,
     required this.downloadPath,
   }) : super(key: key);
 
   @override
-  State<PowerFilePreviewWidget> createState() => _PowerFilePreviewWidgetState();
+  State<PowerFileViewWidget> createState() => _PowerFileViewWidgetState();
 }
 
-class _PowerFilePreviewWidgetState extends State<PowerFilePreviewWidget> {
+class _PowerFileViewWidgetState extends State<PowerFileViewWidget> {
   late PowerLocalizations local = PowerLocalizations.of(context);
 
   /// Does it support downloading
@@ -88,7 +88,7 @@ class _PowerFilePreviewWidgetState extends State<PowerFilePreviewWidget> {
   Widget _buildBodyWidget() {
     debugPrint("_buildBodyWidget downloadState: $downloadState");
     if (downloadState == DownloadState.done) {
-      return FilePreviewWidget(filePath: widget.downloadPath);
+      return LocalFileViewWidget(filePath: widget.downloadPath);
     } else {
       return Center(
         child: _buildProgressWidget(),
@@ -114,7 +114,7 @@ class _PowerFilePreviewWidgetState extends State<PowerFilePreviewWidget> {
   /// Download
   Future<DownloadState> download() async {
     downloadState = DownloadState.downloading;
-    await FlutterPowerFilePreview.downloadFile(
+    await PowerFileView.downloadFile(
       fileLink,
       filePath,
       callback: (DownloadState state) {
@@ -141,7 +141,7 @@ class _PowerFilePreviewWidgetState extends State<PowerFilePreviewWidget> {
 
   /// Display different layouts by changing state
   Future<void> getViewType() async {
-    final String? size = await FlutterPowerFilePreview.getFileSize(
+    final String? size = await PowerFileView.getFileSize(
       context,
       fileLink,
       cancelToken: cancelToken,

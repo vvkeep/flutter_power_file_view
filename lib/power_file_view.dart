@@ -1,12 +1,6 @@
-import 'dart:async';
+library power_file_view;
 
-import 'package:flutter/services.dart';
+export 'package:dio/dio.dart';
 
-class PowerFileView {
-  static const MethodChannel _channel = MethodChannel('power_file_view');
-
-  static Future<String?> get platformVersion async {
-    final String? version = await _channel.invokeMethod('getPlatformVersion');
-    return version;
-  }
-}
+export 'src/power_file_view.dart';
+export 'src/widget/power_file_view_widget.dart';

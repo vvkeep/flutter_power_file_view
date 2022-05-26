@@ -3,24 +3,24 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:power_file_view/src/power_file_view.dart';
 import 'package:power_file_view/src/constant/constant.dart';
 import 'package:power_file_view/src/enum/engine_state.dart';
 import 'package:power_file_view/src/enum/preview_type.dart';
 import 'package:power_file_view/src/i18n/power_localizations.dart';
+import 'package:power_file_view/src/power_file_view.dart';
 import 'package:power_file_view/src/utils/file_util.dart';
 
-class FilePreviewWidget extends StatefulWidget {
+class LocalFileViewWidget extends StatefulWidget {
   /// Path to local file
   final String filePath;
 
-  const FilePreviewWidget({Key? key, required this.filePath}) : super(key: key);
+  const LocalFileViewWidget({Key? key, required this.filePath}) : super(key: key);
 
   @override
-  State<FilePreviewWidget> createState() => _FilePreviewWidgetState();
+  State<LocalFileViewWidget> createState() => _LocalFileViewWidgetState();
 }
 
-class _FilePreviewWidgetState extends State<FilePreviewWidget> {
+class _LocalFileViewWidgetState extends State<LocalFileViewWidget> {
   late PowerLocalizations local = PowerLocalizations.of(context);
 
   @override
@@ -121,17 +121,17 @@ class _FilePreviewWidgetState extends State<FilePreviewWidget> {
       if (FileUtil.isExistsFile(filePath)) {
         if (FileUtil.isSupportOpen(fileType)) {
           if (Platform.isAndroid) {
-            final EngineState? state = await FlutterPowerFilePreview.engineState();
+            final EngineState? state = await PowerFileView.engineState();
             if (state == EngineState.done) {
               return PreviewType.done;
             } else if (state == EngineState.error) {
               return PreviewType.engineFail;
             } else {
-              FlutterPowerFilePreview.engineInitStream.listen((EngineState e) async {
+              PowerFileView.engineInitStream.listen((EngineState e) async {
                 if (e == EngineState.done) {
                   setState(() {});
                 } else {
-                  await FlutterPowerFilePreview.initEngine();
+                  await PowerFileView.initEngine();
                   setState(() {});
                 }
               });

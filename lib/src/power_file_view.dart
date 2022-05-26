@@ -15,7 +15,7 @@ import 'package:power_file_view/src/utils/download_util.dart';
 
 import 'constant/constant.dart';
 
-class FlutterPowerFilePreview {
+class PowerFileView {
   static const MethodChannel _channel = MethodChannel(Constants.channelName);
 
   static final _engineInitController = StreamController<EngineState>.broadcast();
