@@ -3,14 +3,45 @@ import 'package:power_file_view/power_file_view.dart';
 
 class PowerErrorWidget extends StatelessWidget {
   final PowerViewType viewType;
+  final VoidCallback retryOnTap;
 
-  const PowerErrorWidget({Key? key, required this.viewType}) : super(key: key);
+  const PowerErrorWidget({Key? key, required this.viewType, required this.retryOnTap}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.red,
-      child: Center(child: Text(_getErrorMsg())),
+      width: double.infinity,
+      height: double.infinity,
+      color: Colors.white,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            _getErrorMsg(),
+            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: Colors.black),
+          ),
+          const SizedBox(height: 8),
+          TextButton(
+              onPressed: retryOnTap,
+              style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all(Colors.blue),
+                shape: MaterialStateProperty.all(const StadiumBorder()),
+              ),
+              child: const SizedBox(
+                width: 80,
+                child: Center(
+                  child: Text(
+                    '重新加载',
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w400,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ))
+        ],
+      ),
     );
   }
 

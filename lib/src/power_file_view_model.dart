@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
@@ -10,20 +11,58 @@ class PowerFileViewModel {
 
   final Function(PowerViewType type) viewTypeChanged;
 
+  final Function(int progress) progressChanged;
+
   late final String fileType = FileUtil.getFileType(filePath);
 
   late bool _isLocalExists = FileUtil.isExistsFile(filePath);
 
-  PowerFileViewModel({required this.downloadUrl, required this.filePath, required this.viewTypeChanged}) {
+  PowerViewType _viewType = PowerViewType.none;
+
+  late StreamSubscription<EngineState> stateSubscription;
+  late StreamSubscription<int> progressSubscription;
+
+  int progress = 0;
+
+  PowerFileViewModel(
+      {required this.downloadUrl,
+      required this.filePath,
+      required this.viewTypeChanged,
+      required this.progressChanged}) {
     debugPrint('downloadUrl: $downloadUrl, downloadPath: $filePath');
+    addListenStream();
   }
 
-  Future<EngineState?> engineState() async {
-    final state = await PowerFileViewManager.engineState();
-    return state;
+  void addListenStream() {
+    stateSubscription = PowerFileViewManager.engineInitStream.listen((EngineState e) async {
+      debugPrint('engineInitStream state: ${EngineStateExtension.description(e)}');
+      if (_viewType == PowerViewType.engineLoading) {
+        await updateViewType();
+        viewTypeChanged(_viewType);
+      }
+    });
+
+    progressSubscription = PowerFileViewManager.engineDownloadStream.listen((int progress) async {
+      debugPrint('engineDownloadStream progress: $progress');
+      this.progress = progress;
+      if (_viewType == PowerViewType.engineLoading) {
+        progressChanged(progress);
+      }
+    });
   }
 
-  Future<PowerViewType> get getViewType async {
+  void removeListenStream() {
+    stateSubscription.cancel();
+    progressSubscription.cancel();
+  }
+
+  updateViewType() async {
+    _viewType = await _getViewType;
+  }
+
+  PowerViewType get getViewType => _viewType;
+
+  Future<PowerViewType> get _getViewType async {
     // 判断是否支持的平台
     if (!_isSupportPlatform) {
       return PowerViewType.unsupportedPlatform;

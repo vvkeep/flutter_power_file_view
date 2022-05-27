@@ -28,6 +28,13 @@ class PowerFileViewManager {
     return version;
   }
 
+  static bool logEnable = true;
+
+  static Future<void> initLogEnable(bool log, bool pluginLog) async {
+    logEnable = log;
+    await _channel.invokeMethod('pluginLogEnable', pluginLog);
+  }
+
   /// Initialize the engine, this method is only valid for the Andorid platform, iOS does not need to call
   ///
   /// 初始化引擎，此方法只针对Andorid平台有效，iOS无需调用
@@ -103,7 +110,9 @@ class PowerFileViewManager {
         _engineInitController.add(type);
         break;
       case 'engineDownloadProgress':
-        _engineDownloadProgressController.add(call.arguments as int);
+        int progress = call.arguments as int;
+        debugPrint('engineDownloadProgress callback: $progress');
+        _engineDownloadProgressController.add(progress);
         break;
       default:
         break;
