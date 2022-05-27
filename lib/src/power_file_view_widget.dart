@@ -39,7 +39,9 @@ class _PowerFileViewWidgetState extends State<PowerFileViewWidget> {
         viewTypeChanged: (type) {
           updatePowerViewType(type: type);
         },
-        progressChanged: (progress) {});
+        progressChanged: (progress) {
+          setState(() {});
+        });
 
     updatePowerViewType();
   }
