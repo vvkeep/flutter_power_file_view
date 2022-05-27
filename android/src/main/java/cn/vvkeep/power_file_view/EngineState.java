@@ -1,35 +1,72 @@
 package cn.vvkeep.power_file_view;
 
 public enum EngineState {
-    /// Not initialized
+
+    /**
+     * Not initialized
+     * <p>
+     * 未初始化
+     */
     none(0),
 
-    /// Ready to start initializing
+    /**
+     * Ready to start initializing
+     * <p>
+     * 开始初始化
+     */
     start(1),
 
-    /// Initialization complete
+    /**
+     * Initialization complete
+     * <p>
+     * 初始化完成
+     */
     done(10),
 
-    /// Initialization exception
+    /**
+     * Initialization exception
+     * <p>
+     * 初始化失败
+     */
     error(11),
 
-    /// Download successful
+    /**
+     * Download successful
+     * <p>
+     * 下载完成
+     */
     downloadSuccess(20),
 
-    /// Download failed
+    /**
+     * Download failed
+     * <p>
+     * 下载失败
+     */
     downloadFail(21),
 
-    /// Downloading
+    /**
+     * Downloading
+     * <p>
+     * 下载中
+     */
     downloading(22),
 
-    /// Installation succeeded
+    /**
+     * Installation succeeded
+     * <p>
+     * 安装成功
+     */
     installSuccess(30),
 
-    /// Installation failed
+    /**
+     * Installation failed
+     * <p>
+     * 安装失败
+     */
     installFail(31);
 
 
-    private int value;
+    private final int value;
 
     EngineState(int value) {
         this.value = value;
