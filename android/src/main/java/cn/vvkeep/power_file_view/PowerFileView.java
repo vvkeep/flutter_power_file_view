@@ -29,10 +29,10 @@ public class PowerFileView implements PlatformView {
     private PowerFileViewPlugin plugin;
 
     public PowerFileView(Context context,
-                            BinaryMessenger messenger,
-                            int id,
-                            Map<String, Object> params,
-                            PowerFileViewPlugin plugin) {
+                         BinaryMessenger messenger,
+                         int id,
+                         Map<String, Object> params,
+                         PowerFileViewPlugin plugin) {
         this.plugin = plugin;
         //这里的Context需要Activity
         tempPath = context.getCacheDir().toString() + File.separator + "TbsReaderTemp";
@@ -40,7 +40,7 @@ public class PowerFileView implements PlatformView {
         readerView = new TbsReaderView(context, new TbsReaderView.ReaderCallback() {
             @Override
             public void onCallBackAction(Integer integer, Object o, Object o1) {
-                Log.e("TAG", "文件打开回调:" + integer + " " + o.toString() + " " + o1.toString());
+                LogUtils.e("TAG", "文件打开回调:" + integer + " " + o.toString() + " " + o1.toString());
             }
         });
         frameLayout.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
@@ -49,7 +49,7 @@ public class PowerFileView implements PlatformView {
         methodChannel = new MethodChannel(messenger, PowerFileViewPlugin.channelName + "_" + id);
         filePath = (String) params.get("filePath");
         fileType = (String) params.get("fileType");
-        Log.e("initFile", "filePath:" + filePath);
+        LogUtils.e("initFile", "filePath:" + filePath);
         loadFile();
     }
 
@@ -60,14 +60,14 @@ public class PowerFileView implements PlatformView {
 
     private void openFile() {
         if (isSupportFile(filePath)) {
-            Log.e("openFile", "打开文件中");
+            LogUtils.e("openFile", "打开文件中");
             //增加下面一句解决没有TbsReaderTemp文件夹存在导致加载文件失败
             File bsReaderTempFile = new File(tempPath);
             if (!bsReaderTempFile.exists()) {
-                bsReaderTempFile.mkdir();
+                boolean isSuccess = bsReaderTempFile.mkdir();
             }
-            Log.e("tempPath","tempPath:"+tempPath);
-            Log.e("filePath","filePath:"+filePath);
+            LogUtils.e("tempPath", "tempPath:" + tempPath);
+            LogUtils.e("filePath", "filePath:" + filePath);
             //加载文件
             Bundle localBundle = new Bundle();
             localBundle.putString("filePath", filePath);
