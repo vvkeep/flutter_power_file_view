@@ -10,6 +10,7 @@ import 'preview_file_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  PowerFileViewManager.initLogEnable(true, true);
   PowerFileViewManager.initEngine();
   runApp(const MyApp());
 }
