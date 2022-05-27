@@ -1,27 +1,28 @@
 package cn.vvkeep.power_file_view;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import android.widget.TextView;
+
+import androidx.annotation.NonNull;
 
 import com.tencent.smtt.sdk.TbsReaderView;
 
 import java.io.File;
 import java.util.Map;
 
-import io.flutter.Log;
 import io.flutter.plugin.common.BinaryMessenger;
+import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.platform.PlatformView;
 
 public class PowerFileView implements PlatformView {
 
-    private  TbsReaderView readerView;
+    private MethodChannel channel;
+    private TbsReaderView readerView;
     private final FrameLayout frameLayout;
     private final String tempPath;
     private final String filePath;
@@ -31,8 +32,18 @@ public class PowerFileView implements PlatformView {
                          int id,
                          Map<String, Object> params,
                          PowerFileViewPlugin plugin) {
-        // The Context here requires Activity  这里的Context需要Activity
+
+        channel = new MethodChannel(messenger, PowerFileViewPlugin.channelName + "_" + id);
+        channel.setMethodCallHandler(new MethodChannel.MethodCallHandler() {
+            @Override
+            public void onMethodCall(@NonNull MethodCall call, @NonNull MethodChannel.Result result) {
+                if (call.method.equals("refreshView")) {
+                    refresh(context);
+                }
+            }
+        });
         tempPath = context.getCacheDir().toString() + File.separator + "TbsReaderTemp";
+        // The Context here requires Activity  这里的Context需要Activity
         frameLayout = new FrameLayout(context);
         readerView = new TbsReaderView(context, new TbsReaderView.ReaderCallback() {
             @Override
@@ -85,6 +96,20 @@ public class PowerFileView implements PlatformView {
         return type;
     }
 
+    private void refresh(Context context) {
+        frameLayout.removeView(readerView);
+        readerView.onStop();
+        readerView = null;
+        readerView = new TbsReaderView(context, new TbsReaderView.ReaderCallback() {
+            @Override
+            public void onCallBackAction(Integer integer, Object o, Object o1) {
+            }
+        });
+        frameLayout.addView(readerView);
+        openFile();
+        frameLayout.requestLayout();
+    }
+
     @Override
     public View getView() {
         return frameLayout;
@@ -93,5 +118,6 @@ public class PowerFileView implements PlatformView {
     @Override
     public void dispose() {
         readerView.onStop();
+        channel.setMethodCallHandler(null);
     }
 }
