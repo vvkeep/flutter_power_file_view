@@ -11,8 +11,8 @@ import io.flutter.plugin.platform.PlatformViewFactory;
 
 public class PowerFileViewFactory extends PlatformViewFactory {
 
-    private Context mContext;
-    private PowerFileViewPlugin plugin;
+    private final Context mContext;
+    private final PowerFileViewPlugin plugin;
     private final BinaryMessenger messenger;
 
     public PowerFileViewFactory(BinaryMessenger messenger,
@@ -27,7 +27,6 @@ public class PowerFileViewFactory extends PlatformViewFactory {
     @Override
     public PlatformView create(Context context, int viewId, Object args) {
         Map<String, Object> params = (Map<String, Object>) args;
-
         return new PowerFileView(mContext, messenger, viewId, params, plugin);
     }
 }

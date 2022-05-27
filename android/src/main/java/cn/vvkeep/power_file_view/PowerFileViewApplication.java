@@ -4,7 +4,7 @@ import io.flutter.app.FlutterApplication;
 
 
 /**
- * 在android目录下新建Application继承FlutterPowerFilePreviewApplication
+ * 在android目录下新建Application继承PowerFileViewApplication
  * 就能在app冷启动时初始化TBS服务，无需手动加载
  */
 public class PowerFileViewApplication extends FlutterApplication {
@@ -12,6 +12,6 @@ public class PowerFileViewApplication extends FlutterApplication {
     public void onCreate() {
         super.onCreate();
         //初始化TBS服务
-        TBSManager.getInstance().initTBS(this,null);
+        new PowerFileViewPlugin().initTBS(getApplicationContext(),null);
     }
 }
