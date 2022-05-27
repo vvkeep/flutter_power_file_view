@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:power_file_view/power_file_view.dart';
 import 'package:power_file_view/src/constant/enums.dart';
 import 'package:power_file_view/src/i18n/power_localizations.dart';
 import 'package:power_file_view/src/power_file_view_model.dart';
@@ -55,7 +56,13 @@ class _PowerFileViewWidgetState extends State<PowerFileViewWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return _buildPowerFileWidget();
+    return OrientationBuilder(
+      builder: (BuildContext context, Orientation orientation) {
+        final isPortrait = orientation == Orientation.portrait;
+        PowerFileViewManager.refreshView();
+        return _buildPowerFileWidget();
+      },
+    );
   }
 
   Widget _buildPowerFileWidget() {
