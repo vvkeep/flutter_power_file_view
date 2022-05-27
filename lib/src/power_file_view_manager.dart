@@ -50,11 +50,6 @@ class PowerFileViewManager {
     await _channel.invokeMethod<bool?>('resetEngine');
   }
 
-  static Future<void> refreshView() async {
-    if (!Platform.isAndroid) return;
-    await _channel.invokeMethod<bool?>('refreshView');
-  }
-
   /// Get the engine status in real time, this method is only valid for Andorid platform, iOS does not need to call
   ///
   /// 实时获取引擎状态，此方法只针对Andorid平台有效，iOS无需调用

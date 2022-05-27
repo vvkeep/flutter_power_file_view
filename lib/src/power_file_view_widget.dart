@@ -27,6 +27,8 @@ class _PowerFileViewWidgetState extends State<PowerFileViewWidget> {
   late PowerLocalizations local = PowerLocalizations.of(context);
   late PowerFileViewModel _viewModel;
 
+  MethodChannel? _channel;
+
   @override
   void initState() {
     super.initState();
@@ -58,8 +60,7 @@ class _PowerFileViewWidgetState extends State<PowerFileViewWidget> {
   Widget build(BuildContext context) {
     return OrientationBuilder(
       builder: (BuildContext context, Orientation orientation) {
-        final isPortrait = orientation == Orientation.portrait;
-        PowerFileViewManager.refreshView();
+        _channel?.invokeMethod('refreshView');
         return _buildPowerFileWidget();
       },
     );
@@ -100,6 +101,9 @@ class _PowerFileViewWidgetState extends State<PowerFileViewWidget> {
         'filePath': _viewModel.filePath,
         'fileType': _viewModel.fileType,
       },
+      onPlatformViewCreated: (id) {
+        _channel = MethodChannel("${Constants.channelName}_$id");
+      },
       creationParamsCodec: const StandardMessageCodec(),
     );
   }
@@ -110,6 +114,9 @@ class _PowerFileViewWidgetState extends State<PowerFileViewWidget> {
       creationParams: <String, String>{
         'filePath': _viewModel.filePath,
         'fileType': _viewModel.fileType,
+      },
+      onPlatformViewCreated: (id) {
+        _channel = MethodChannel("${Constants.channelName}_$id");
       },
       creationParamsCodec: const StandardMessageCodec(),
     );
