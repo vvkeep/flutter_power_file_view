@@ -35,68 +35,55 @@ class _MyAppState extends State<MyApp> {
   }
 }
 
+const List<String> files = [
+  "https://google-developer-training.github.io/android-developer-fundamentals-course-concepts/en/android-developer-fundamentals-course-concepts-en.pdf",
+  "http://www.cztouch.com/upfiles/soft/testpdf.pdf",
+  "http://blog.java1234.com/cizhi20211008.docx",
+  "http://blog.java1234.com/moban20211008.xls"
+];
+
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    List<String> files = [
-      "http://www.cztouch.com/upfiles/soft/testpdf.pdf",
-      "http://blog.java1234.com/cizhi20211008.docx",
-      "http://blog.java1234.com/moban20211008.xls"
-    ];
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.white,
-        title: const Text(
-          '文件列表',
-          style: TextStyle(color: Colors.black),
-        ),
+        title: const Text('文件列表'),
       ),
       body: ListView.builder(
           itemCount: files.length,
           itemBuilder: (context, index) {
             String filePath = files[index];
-            String fileShowText = '';
-
-            int i = filePath.lastIndexOf('/');
-            if (i <= -1) {
-              fileShowText = filePath;
-            } else {
-              fileShowText = filePath.substring(i + 1);
-            }
-
-            int j = fileShowText.lastIndexOf('.');
-            String title = '';
-            String type = '';
-            if (j > -1) {
-              title = fileShowText.substring(0, j);
-              type = fileShowText.substring(j + 1).toLowerCase();
-            }
+            final fileName = FileUtil.getFileName(filePath);
+            final fileType = FileUtil.getFileType(filePath);
             return Container(
               margin: const EdgeInsets.only(top: 10.0),
               padding: const EdgeInsets.symmetric(horizontal: 15.0),
               child: ElevatedButton(
                 onPressed: () async {
-                  String savePath = await setFilePath(type, title);
-                  onNetworkTap(context, title, type, filePath, savePath);
+                  String savePath = await setFilePath(fileType, fileName);
+                  onTap(context, filePath, savePath);
                 },
-                child: Text(fileShowText),
+                child: Text(fileName),
               ),
             );
           }),
     );
   }
 
-  Future onNetworkTap(BuildContext context, String title, String type, String downloadUrl, String downloadPath) async {
+  Future onTap(BuildContext context, String downloadUrl, String downloadPath) async {
     bool isGranted = await PermissionUtil.checkPhotos();
     if (isGranted) {
-      Navigator.of(context).push(MaterialPageRoute(builder: (ctx) {
-        return PreviewFilePage(
-          downloadUrl: downloadUrl,
-          downloadPath: downloadPath,
-        );
-      }));
+      Navigator.of(context).push(
+        MaterialPageRoute(builder: (ctx) {
+          return PreviewFilePage(
+            downloadUrl: downloadUrl,
+            downloadPath: downloadPath,
+          );
+        }),
+      );
     }
   }
 

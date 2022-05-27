@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:power_file_view/power_file_view.dart';
 
 class PreviewFilePage extends StatefulWidget {
@@ -18,10 +17,7 @@ class _PreviewFilePageState extends State<PreviewFilePage> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        systemOverlayStyle: SystemUiOverlayStyle.dark,
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        iconTheme: const IconThemeData(color: Colors.black),
+        title: const Text('文件预览'),
       ),
       body: PowerFileViewWidget(
         downloadUrl: widget.downloadUrl,
