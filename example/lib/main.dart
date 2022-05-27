@@ -75,7 +75,7 @@ class HomePage extends StatelessWidget {
   }
 
   Future onTap(BuildContext context, String downloadUrl, String downloadPath) async {
-    bool isGranted = await PermissionUtil.checkPhotos();
+    bool isGranted = await PermissionUtil.check();
     if (isGranted) {
       Navigator.of(context).push(
         MaterialPageRoute(builder: (ctx) {
@@ -85,6 +85,8 @@ class HomePage extends StatelessWidget {
           );
         }),
       );
+    } else {
+      debugPrint('no permission');
     }
   }
 

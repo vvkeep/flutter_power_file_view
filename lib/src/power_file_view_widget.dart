@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -25,10 +24,7 @@ class PowerFileViewWidget extends StatefulWidget {
 
 class _PowerFileViewWidgetState extends State<PowerFileViewWidget> {
   late PowerLocalizations local = PowerLocalizations.of(context);
-
   late PowerFileViewModel _viewModel;
-
-  final CancelToken cancelToken = CancelToken();
 
   @override
   void initState() {
@@ -54,10 +50,7 @@ class _PowerFileViewWidgetState extends State<PowerFileViewWidget> {
   @override
   void dispose() {
     super.dispose();
-    _viewModel.removeListenStream();
-    if (!cancelToken.isCancelled) {
-      cancelToken.cancel('The page is closed.');
-    }
+    _viewModel.clearTask();
   }
 
   @override
@@ -79,7 +72,10 @@ class _PowerFileViewWidgetState extends State<PowerFileViewWidget> {
       case PowerViewType.fileFail:
         return PowerErrorWidget(
           viewType: viewType,
-          retryOnTap: () {},
+          retryOnTap: () {
+            _viewModel.reset();
+            setState(() {});
+          },
         );
       case PowerViewType.done:
         if (Platform.isAndroid) {

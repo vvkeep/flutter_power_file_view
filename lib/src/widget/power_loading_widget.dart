@@ -48,9 +48,9 @@ class _PowerLoadingWidgetState extends State<PowerLoadingWidget> {
 
   String _getLoadingMsg() {
     if (widget.viewType == PowerViewType.engineLoading) {
-      return "引擎下载中(${widget.progress!}%)...";
+      return "引擎下载中(${widget.progress!}%)";
     } else if (widget.viewType == PowerViewType.fileLoading) {
-      return "文件加载中...";
+      return "文件下载中(${widget.progress!}%)";
     } else if (widget.viewType == PowerViewType.none) {
       return "页面初始化...";
     } else {

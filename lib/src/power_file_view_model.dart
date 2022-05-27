@@ -5,9 +5,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:power_file_view/power_file_view.dart';
 
 class PowerFileViewModel {
-  final String downloadUrl;
+  String downloadUrl;
 
-  final String filePath;
+  String filePath;
 
   final Function(PowerViewType type) viewTypeChanged;
 
@@ -23,6 +23,8 @@ class PowerFileViewModel {
   late StreamSubscription<int> progressSubscription;
 
   int progress = 0;
+
+  final CancelToken cancelToken = CancelToken();
 
   PowerFileViewModel(
       {required this.downloadUrl,
@@ -51,9 +53,20 @@ class PowerFileViewModel {
     });
   }
 
-  void removeListenStream() {
+  void clearTask() {
     stateSubscription.cancel();
     progressSubscription.cancel();
+    if (!cancelToken.isCancelled) {
+      cancelToken.cancel();
+    }
+  }
+
+  void reset() async {
+    if (_viewType == PowerViewType.engineFail) {
+      await PowerFileViewManager.resetEngine();
+    }
+
+    await updateViewType();
   }
 
   updateViewType() async {
@@ -107,9 +120,19 @@ class PowerFileViewModel {
       return PowerViewType.done;
     }
 
-    int? size = await DownloadUtil.fileSize(downloadUrl);
+    int? size = await DownloadUtil.fileSize(downloadUrl, cancelToken: cancelToken);
+    if (size == null) {
+      debugPrint("get file size error");
+      return PowerViewType.fileLoading;
+    }
+
     debugPrint("download file size: ${FileUtil.fileSize(size)}");
-    DownloadUtil.download(downloadUrl, filePath, callback: (state) {
+    DownloadUtil.download(downloadUrl, filePath, cancelToken: cancelToken, onProgress: (count, total) {
+      final value = (count.toDouble() / total.toDouble() * 100).toInt();
+      if (_viewType == PowerViewType.fileLoading) {
+        progressChanged(value);
+      }
+    }, callback: (state) {
       if (state == DownloadState.error || state == DownloadState.fail) {
         viewTypeChanged(PowerViewType.fileFail);
       } else if (state == DownloadState.done) {

@@ -9,7 +9,7 @@
     <application
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher"
-        android:label="flutter_power_file_preview_example"
+        android:label="power_file_view_example"
         android:networkSecurityConfig="@xml/network_config">
         <activity
             android:name=".MainActivity"
