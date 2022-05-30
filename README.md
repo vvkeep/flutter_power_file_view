@@ -1,15 +1,27 @@
-# power_file_view
+# Flutter PowerFileView
 
-A new flutter plugin project.
+##### 一款本地文件预览插件，使用PowerFileView可以像android、ios一样方便的预览doc、docx、ppt、pptx、xls、xlsx、pdf等文件。
 
-## Getting Started
+## 说明
+* android使用腾讯TBS服务，支持doc、docx、ppt、pptx、xls、xlsx、pdf、txt、epub文件的预览
+* ios使用WKWebView，WKWebView所支持的均可预览
 
-This project is a starting point for a Flutter
-[plug-in package](https://flutter.dev/developing-packages/),
-a specialized package that includes platform-specific implementation code for
-Android and/or iOS.
+## 支持格式
+|格式|android|ios|
+|:----|:----:|:----:|
+|.doc| ✅ | ✅ |
+|.docx| ✅ | ✅ |
+|.ppt| ✅ | ✅ |
+|.pptx| ✅ | ✅ |
+|.xls| ✅ | ✅ |
+|.xlsx| ✅ | ✅ |
+|.pdf|✅ | ✅ |
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## 集成
+### 1、pubspec.yaml
+
+### 2、快速使用
+
+
+
 

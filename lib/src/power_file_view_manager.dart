@@ -18,9 +18,11 @@ class PowerFileViewManager {
   static const MethodChannel _channel = MethodChannel(Constants.channelName);
 
   static final _engineInitController = StreamController<EngineState>.broadcast();
+
   static Stream<EngineState> get engineInitStream => _engineInitController.stream;
 
   static final _engineDownloadProgressController = StreamController<int>.broadcast();
+
   static Stream<int> get engineDownloadStream => _engineDownloadProgressController.stream;
 
   static Future<String?> get platformVersion async {
@@ -30,6 +32,11 @@ class PowerFileViewManager {
 
   static bool logEnable = true;
 
+  /// Whether to display the log
+  /// enable: whether to display the Log of flutter, pluginEnable: whether to display the Log of the native platform
+  ///
+  /// 是否展示log
+  /// enable：是否展示 flutter的Log ,  pluginEnable ：是否展示原生平台的Log
   static Future<void> initLogEnable(bool log, bool pluginLog) async {
     logEnable = log;
     await _channel.invokeMethod('pluginLogEnable', pluginLog);
@@ -38,13 +45,16 @@ class PowerFileViewManager {
   /// Initialize the engine, this method is only valid for the Andorid platform, iOS does not need to call
   ///
   /// 初始化引擎，此方法只针对Andorid平台有效，iOS无需调用
-  /// 1. 判断手机是是否加载陈宫
+  /// 1. 判断手机是是否加载成功
   static Future<void> initEngine() async {
     if (!Platform.isAndroid) return;
     _channel.setMethodCallHandler(_handler);
     await _channel.invokeMethod<bool?>('initEngine');
   }
 
+  /// Resets the engine state, and then initializes the engine
+  ///
+  /// 重置引擎状态，然后初始化引擎
   static Future<void> resetEngine() async {
     if (!Platform.isAndroid) return;
     await _channel.invokeMethod<bool?>('resetEngine');
@@ -107,6 +117,13 @@ class PowerFileViewManager {
         fileSizeFailTip: fileSizeFailTip,
       );
 
+  /// Get information about native platform callbacks
+  /// engineState：Represents the engine initialization progress
+  /// engineDownloadProgress：Represents the engine download progress
+  ///
+  /// 获取原生平台回传的信息
+  /// engineState：代表引擎初始化进度
+  /// engineDownloadProgress：代表引擎下载进度
   static Future<void> _handler(MethodCall call) async {
     switch (call.method) {
       case 'engineState':
