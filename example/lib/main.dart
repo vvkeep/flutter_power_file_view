@@ -64,7 +64,7 @@ class HomePage extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 15.0),
               child: ElevatedButton(
                 onPressed: () async {
-                  String savePath = await setFilePath(fileType, fileName);
+                  String savePath = await getFilePath(fileType, fileName);
                   onTap(context, filePath, savePath);
                 },
                 child: Text(fileName),
@@ -90,7 +90,7 @@ class HomePage extends StatelessWidget {
     }
   }
 
-  Future setFilePath(String type, String assetPath) async {
+  Future getFilePath(String type, String assetPath) async {
     final _directory = await getTemporaryDirectory();
     return "${_directory.path}/fileview/${base64.encode(utf8.encode(assetPath))}.$type";
   }
