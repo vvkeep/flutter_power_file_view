@@ -167,18 +167,19 @@ public class PowerFileViewPlugin implements FlutterPlugin, ActivityAware {
         QbSdk.setTbsListener(new TbsListener() {
             @Override
             public void onDownloadFinish(int i) {
-                //The status at the end of the download, the errorcode is 100 when the download is successful, the others are failures, and the external does not need to pay attention to the specific reason for the failure
-                //下载结束时的状态，下载成功时errorCode为100,其他均为失败，外部不需要关注具体的失败原因
-                if (i == 100) {
-                    engineState = EngineState.downloadSuccess;
-                } else {
-                    engineState = EngineState.downloadFail;
+                if (i != 0) {
+                    //The status at the end of the download, the errorcode is 100 when the download is successful, the others are failures, and the external does not need to pay attention to the specific reason for the failure
+                    //下载结束时的状态，下载成功时errorCode为100,其他均为失败，外部不需要关注具体的失败原因
+                    if (i == 100) {
+                        engineState = EngineState.downloadSuccess;
+                    } else {
+                        engineState = EngineState.downloadFail;
+                    }
+                    LogUtils.e("onDownloadFinish -->Download X5 core status：" + i);
+                    if (onInitListener != null) {
+                        onInitListener.onInit(engineState);
+                    }
                 }
-                LogUtils.e("onDownloadFinish -->Download X5 core status：" + i);
-                if (onInitListener != null) {
-                    onInitListener.onInit(engineState);
-                }
-
             }
 
             @Override
