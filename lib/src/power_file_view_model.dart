@@ -6,7 +6,7 @@ import 'package:power_file_view/power_file_view.dart';
 import 'constant/constants.dart';
 
 class PowerFileViewModel {
-  String downloadUrl;
+  String? downloadUrl;
 
   String filePath;
 
@@ -27,11 +27,12 @@ class PowerFileViewModel {
 
   final CancelToken cancelToken = CancelToken();
 
-  PowerFileViewModel(
-      {required this.downloadUrl,
-      required this.filePath,
-      required this.viewTypeChanged,
-      required this.progressChanged}) {
+  PowerFileViewModel({
+    required this.filePath,
+    this.downloadUrl,
+    required this.viewTypeChanged,
+    required this.progressChanged,
+  }) {
     powerPrint('downloadUrl: $downloadUrl, downloadPath: $filePath');
     addListenStream();
   }
@@ -77,17 +78,14 @@ class PowerFileViewModel {
   PowerViewType get getViewType => _viewType;
 
   Future<PowerViewType> get _getViewType async {
-    // 判断是否支持的平台
     if (!_isSupportPlatform) {
       return PowerViewType.unsupportedPlatform;
     }
 
-    // 判断是否支持的文件类型
     if (!_isSupportFileType) {
       return PowerViewType.unsupportedType;
     }
 
-    // Android 判断引擎状态
     if (Platform.isAndroid) {
       EngineState? state = await PowerFileViewManager.engineState();
       if (state == null) {
