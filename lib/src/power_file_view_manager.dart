@@ -118,12 +118,12 @@ class PowerFileViewManager {
       );
 
   /// Get information about native platform callbacks
-  /// engineState：Represents the engine initialization progress
-  /// engineDownloadProgress：Represents the engine download progress
+  /// engineState: the engine state
+  /// engineDownloadProgress: the engine download progress
   ///
   /// 获取原生平台回传的信息
-  /// engineState：代表引擎初始化进度
-  /// engineDownloadProgress：代表引擎下载进度
+  /// engineState：引擎状态
+  /// engineDownloadProgress：引擎下载进度
   static Future<void> _handler(MethodCall call) async {
     switch (call.method) {
       case 'engineState':
