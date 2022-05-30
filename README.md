@@ -1,4 +1,8 @@
-# Flutter PowerFileView
+# PowerFileView
+
+[![pub package](https://img.shields.io/pub/v/flutter_filereader.svg)](https://pub.dartlang.org/packages/power_file_view)
+
+English | [简体中文](./README.zh-CN.md)
 
 A local file preview plugin, using PowerFileView, you can preview doc, docx, ppt, pptx, xls, xlsx, pdf and other files as easily as android and ios.
 

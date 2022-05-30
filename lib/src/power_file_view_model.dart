@@ -63,7 +63,7 @@ class PowerFileViewModel {
     }
   }
 
-  void reset() async {
+  Future<void> reset() async {
     if (_viewType == PowerViewType.engineFail) {
       await PowerFileViewManager.resetEngine();
     }

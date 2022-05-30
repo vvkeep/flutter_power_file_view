@@ -1,4 +1,8 @@
-# Flutter PowerFileView
+# PowerFileView
+
+[![pub package](https://img.shields.io/pub/v/flutter_filereader.svg)](https://pub.dartlang.org/packages/power_file_view)
+
+简体中文 | [English](./README.md)
 
 一款本地文件预览插件，使用PowerFileView可以像android、ios一样方便的预览doc、docx、ppt、pptx、xls、xlsx、pdf等文件。
 

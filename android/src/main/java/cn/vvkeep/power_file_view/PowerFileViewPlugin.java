@@ -3,11 +3,14 @@ package cn.vvkeep.power_file_view;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.IntentFilter;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 
 import com.tencent.smtt.export.external.TbsCoreSettings;
 import com.tencent.smtt.sdk.QbSdk;
+import com.tencent.smtt.sdk.TbsDownloader;
 import com.tencent.smtt.sdk.TbsListener;
 
 import java.io.File;
@@ -30,7 +33,9 @@ public class PowerFileViewPlugin implements FlutterPlugin, ActivityAware {
 
     private MethodChannel channel;
     private FlutterPluginBinding pluginBinding;
+    private NetworkBroadcastReceiver mReceiver;
     private Activity activity;
+    private Context context;
     private EngineState engineState = EngineState.none;
 
     @Override
@@ -43,9 +48,14 @@ public class PowerFileViewPlugin implements FlutterPlugin, ActivityAware {
     public void onDetachedFromEngine(@NonNull FlutterPluginBinding binding) {
         LogUtils.e("onDetachedFromEngine");
         channel.setMethodCallHandler(null);
+        if (mReceiver != null && context != null) {
+            context.unregisterReceiver(mReceiver);
+        }
     }
 
     private void init(Context context, BinaryMessenger messenger) {
+        this.context = context;
+        registerBroadcast(context);
         channel = new MethodChannel(messenger, channelName);
         channel.setMethodCallHandler(new MethodCallHandler() {
             @Override
@@ -77,6 +87,23 @@ public class PowerFileViewPlugin implements FlutterPlugin, ActivityAware {
                 }
             }
         });
+    }
+
+    private void registerBroadcast(Context context) {
+        IntentFilter filter = new IntentFilter();
+        filter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
+        mReceiver = new NetworkBroadcastReceiver(new NetworkBroadcastReceiver.OnNetworkChangeListener() {
+            @Override
+            public void onNetworkChange(boolean isConnected) {
+                LogUtils.e("isConnected:"+isConnected);
+                if (!isConnected && engineState == EngineState.downloading) {
+                    engineState = EngineState.downloadFail;
+                    TbsDownloader.stopDownload();
+                    channel.invokeMethod("engineState", engineState.getValue());
+                }
+            }
+        });
+        context.registerReceiver(mReceiver, filter);
     }
 
     @Override

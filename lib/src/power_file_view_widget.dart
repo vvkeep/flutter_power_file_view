@@ -133,8 +133,8 @@ class _PowerFileViewWidgetState extends State<PowerFileViewWidget> {
       _widget = PowerErrorWidget(
         viewType: viewType,
         errorMsg: _viewModel.getMsg(_local),
-        retryOnTap: () {
-          _viewModel.reset();
+        retryOnTap: () async {
+          await _viewModel.reset();
           setState(() {});
         },
       );
