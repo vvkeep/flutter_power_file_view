@@ -10,7 +10,7 @@ import 'permission_util.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  PowerFileViewManager.initLogEnable(true, true);
+  PowerFileViewManager.initLogEnable(true, false);
   PowerFileViewManager.initEngine();
   runApp(const MyApp());
 }

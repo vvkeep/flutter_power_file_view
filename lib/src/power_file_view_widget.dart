@@ -34,7 +34,7 @@ class PowerFileViewWidget extends StatefulWidget {
 }
 
 class _PowerFileViewWidgetState extends State<PowerFileViewWidget> {
-  late PowerLocalizations local = PowerLocalizations.of(context);
+  late final PowerLocalizations _local = PowerLocalizations.of(context);
   late PowerFileViewModel _viewModel;
 
   MethodChannel? _channel;
@@ -83,13 +83,13 @@ class _PowerFileViewWidgetState extends State<PowerFileViewWidget> {
       case PowerViewType.none:
       case PowerViewType.engineLoading:
       case PowerViewType.fileLoading:
-        return SizedBox.expand(child: _loadingWidget(viewType));
+        return _loadingWidget(viewType);
       case PowerViewType.unsupportedPlatform:
       case PowerViewType.nonExistent:
       case PowerViewType.unsupportedType:
       case PowerViewType.engineFail:
       case PowerViewType.fileFail:
-        return SizedBox.expand(child: _errorWidget(viewType));
+        return _errorWidget(viewType);
       case PowerViewType.done:
         if (Platform.isAndroid) {
           return _createAndroidView();
@@ -101,26 +101,37 @@ class _PowerFileViewWidgetState extends State<PowerFileViewWidget> {
 
   Widget _loadingWidget(PowerViewType viewType) {
     final builder = widget.loadingBuilder;
+    Widget _widget;
     if (builder == null) {
-      return PowerLoadingWidget(viewType: viewType, progress: _viewModel.progress);
+      _widget = PowerLoadingWidget(msg: _viewModel.getMsg(_local));
     } else {
-      return builder(viewType, _viewModel.progress);
+      _widget = builder(viewType, _viewModel.progress);
     }
+    return SizedBox.expand(
+      child: _widget,
+    );
   }
 
   Widget _errorWidget(PowerViewType viewType) {
     final builder = widget.errorBuilder;
+    Widget _widget;
+
     if (builder == null) {
-      return PowerErrorWidget(
+      _widget = PowerErrorWidget(
         viewType: viewType,
+        errorMsg: _viewModel.getMsg(_local),
         retryOnTap: () {
           _viewModel.reset();
           setState(() {});
         },
       );
     } else {
-      return builder(viewType);
+      _widget = builder(viewType);
     }
+
+    return SizedBox.expand(
+      child: _widget,
+    );
   }
 
   Widget _createAndroidView() {

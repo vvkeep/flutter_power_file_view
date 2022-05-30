@@ -4,8 +4,8 @@ import 'package:power_file_view/src/constant/enums.dart';
 class DownloadUtil {
   static Dio _dio() {
     final BaseOptions options = BaseOptions(
-      connectTimeout: 90 * 1000,
-      receiveTimeout: 90 * 1000,
+      connectTimeout: 30 * 1000,
+      receiveTimeout: 60 * 1000,
     );
     return Dio(options);
   }
@@ -53,9 +53,6 @@ class DownloadUtil {
     Map<String, dynamic>? queryParameters,
     CancelToken? cancelToken,
     Options? options,
-    String? fileSizeTip,
-    String? fileSizeErrorTip,
-    String? fileSizeFailTip,
   }) async {
     try {
       final Response<dynamic> response = await _dio().head<dynamic>(
