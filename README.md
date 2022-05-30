@@ -63,9 +63,11 @@ buildTypes {
 #### 2、IOS集成
 
 ### 3、TBS初始化
+
 由于android使用TBS服务，所以在使用前需要初始化，耗时3-30秒左右。
 
 1、异步初始化（推荐）
+
 可以在app的main.dart文件的main函数下执行异步初始化、这样用户打开文件就不需要等待TBS初始化。
 ```
 void main() async {
@@ -75,11 +77,22 @@ void main() async {
 }
 ```
 2、打开时初始化
+
 如不进行异步初始化配置，那么文件打开前会自动进行初始化操作，用户无需配置
 
 
 ### 4、快速使用
+#### 文件预览
 传入要预览的文件的downloadUrl和文件下载的存储路径downloadPath即可
+
+#####定义downloadPath
+```
+  import 'package:path_provider/path_provider.dart';
+  ...
+  final _directory = await getTemporaryDirectory();
+  final downloadPath ="${_directory.path}/fileview/"fileName.pdf";//定一个你喜欢的名字即可
+```
+
 ```
 class PowerFileViewPage extends StatefulWidget {
   final String downloadUrl;
@@ -108,6 +121,28 @@ class _PowerFileViewPageState extends State<PowerFileViewPage> {
 }
 ```
 
+#### 自定义进度展示和错误展示
+可以在loadingBuilder和errorBuilder中自定义进度加载的显示样式和错误的显示样式。
+```
+ PowerFileViewWidget(
+        downloadUrl: widget.downloadUrl,
+        filePath: widget.downloadPath,
+        loadingBuilder: (viewType, progress) {
+          return Container(
+            color: Colors.grey,
+            alignment: Alignment.center,
+            child: Text("加载中: $progress"),
+          );
+        },
+        errorBuilder: (viewType) {
+          return Container(
+            color: Colors.red,
+            alignment: Alignment.center,
+            child: const Text("出错了！！！！"),
+          );
+        },
+      ),
+```
 
 ### 5、Http配置（可选）
 如果需要用到明文下载、需要进行以下配置
