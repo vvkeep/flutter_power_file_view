@@ -85,7 +85,7 @@ void main() async {
 #### 文件预览
 传入要预览的文件的downloadUrl和文件下载的存储路径downloadPath即可
 
-#####定义downloadPath
+##### 定义downloadPath
 ```
   import 'package:path_provider/path_provider.dart';
   ...
