@@ -22,17 +22,17 @@
 在pubspec.yaml文件下添加
 
 ### 2、快速集成
-#### 1、安卓集成
+#### 1、Android集成
 由于使用android使用TBS服务，所以需要网络权限和存储权限。
-在安卓的AndroidManifest文件中添加下列权限
+在安卓的AndroidManifest文件中添加下列权限。
 ```
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
 ```
-为了避免release版本加载TBS内核库失败
-在混淆文件proguard-rules.pro中加入下面的代码
+为了避免release版本加载TBS内核库失败。
+在混淆文件proguard-rules.pro中加入下面的代码。
 ```
 -dontwarn dalvik.**
 -dontwarn com.tencent.smtt.**
@@ -63,9 +63,10 @@ buildTypes {
 #### 2、IOS集成
 
 ### 3、TBS初始化
-由于android使用TBS服务，所以在使用前需要初始化，耗时3-30秒左右
+由于android使用TBS服务，所以在使用前需要初始化，耗时3-30秒左右。
+
 1、异步初始化（推荐）
-可以在app的main.dart文件的main函数下执行异步初始化、这样用户打开文件就不需要等待TBS初始化了
+可以在app的main.dart文件的main函数下执行异步初始化、这样用户打开文件就不需要等待TBS初始化。
 ```
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
