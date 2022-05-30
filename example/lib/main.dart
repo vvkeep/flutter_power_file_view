@@ -4,9 +4,9 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:power_file_view/power_file_view.dart';
+import 'package:power_file_view_example/power_file_view_page.dart';
 
 import 'permission_util.dart';
-import 'preview_file_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -79,7 +79,7 @@ class HomePage extends StatelessWidget {
     if (isGranted) {
       Navigator.of(context).push(
         MaterialPageRoute(builder: (ctx) {
-          return PreviewFilePage(
+          return PowerFileViewPage(
             downloadUrl: downloadUrl,
             downloadPath: downloadPath,
           );

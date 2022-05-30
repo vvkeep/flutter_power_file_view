@@ -30,9 +30,9 @@ class PowerFileViewManager {
 
   static bool logEnable = true;
 
-  static Future<void> initLogEnable(bool log, bool pluginLog) async {
-    logEnable = log;
-    await _channel.invokeMethod('pluginLogEnable', pluginLog);
+  static Future<void> initLogEnable(bool enbale, bool pluginEnable) async {
+    logEnable = enbale;
+    await _channel.invokeMethod('pluginLogEnable', pluginEnable);
   }
 
   /// Initialize the engine, this method is only valid for the Andorid platform, iOS does not need to call
