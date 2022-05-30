@@ -110,7 +110,7 @@ class _PowerFileViewPageState extends State<PowerFileViewPage> {
 
 ### 5、Http配置（可选）
 如果需要用到明文下载、需要进行以下配置
-####1、android
+#### 1、android
 在android/app/src/main/res/xml下新建network_config.xml
 ```
 <?xml version="1.0" encoding="utf-8"?>
