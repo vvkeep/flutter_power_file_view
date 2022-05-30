@@ -83,8 +83,7 @@ void main() async {
 
 ### 4、快速使用
 #### 文件预览
-传入要预览的文件的downloadUrl和文件下载的存储路径downloadPath即可
-
+1、网络文件：传入要预览的文件的downloadUrl和文件下载的存储路径downloadPath即可。
 ##### 定义downloadPath
 ```
   import 'package:path_provider/path_provider.dart';
@@ -92,6 +91,9 @@ void main() async {
   final _directory = await getTemporaryDirectory();
   final downloadPath ="${_directory.path}/fileview/"fileName.pdf";//定一个你喜欢的名字即可
 ```
+
+2、本地文件：传入本地文件所在路径downloadPath即可。
+
 
 ```
 class PowerFileViewPage extends StatefulWidget {
