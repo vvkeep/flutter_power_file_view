@@ -1,6 +1,6 @@
 name: power_file_view
 description: A powerful file view widget, support a variety of file types, such as Doc Eexcl PPT TXT PDF and so on, Android is implemented by Tencent X5, iOS is implemented by WKWebView.
-version: 1.0.0
+version: 1.0.1
 homepage: https://github.com/vvkeep/flutter_power_file_view
 
 environment:
