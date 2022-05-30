@@ -65,7 +65,7 @@ class PowerFileViewModel {
 
   Future<void> reset() async {
     if (_viewType == PowerViewType.engineFail) {
-      await PowerFileViewManager.resetEngine();
+      PowerFileViewManager.resetEngine();
     }
 
     await updateViewType();
@@ -88,11 +88,11 @@ class PowerFileViewModel {
 
     if (Platform.isAndroid) {
       EngineState? state = await PowerFileViewManager.engineState();
+      powerPrint('get engineState: ${state != null ? EngineStateExtension.description(state) : 'null'}');
       if (state == null) {
         return PowerViewType.engineFail;
       }
 
-      powerPrint('get engineState: ${EngineStateExtension.description(state)}');
       switch (state) {
         case EngineState.done:
           return _viewTypeByLoadFile;
