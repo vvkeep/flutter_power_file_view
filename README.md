@@ -157,13 +157,13 @@ class _PowerFileViewPageState extends State<PowerFileViewPage> {
 </network-security-config>
 ```
 
-在android/app/src/main/AndroidManifest.xml中使用
+并在android/app/src/main/AndroidManifest.xml中配置
 ```
 <application
        android:networkSecurityConfig="@xml/network_config">
 ```
 #### 2、ios
-在ios/Runner/Info.plist中
+确保在ios/Runner/Info.plist中添加下列key
 ```
  <key>NSAppTransportSecurity</key>
         <dict>
