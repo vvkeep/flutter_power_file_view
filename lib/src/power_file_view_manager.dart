@@ -7,7 +7,6 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:power_file_view/src/constant/enums.dart';
 import 'package:power_file_view/src/utils/download_util.dart';
@@ -33,10 +32,12 @@ class PowerFileViewManager {
   static bool logEnable = true;
 
   /// Whether to display the log
-  /// enable: whether to display the Log of flutter, pluginEnable: whether to display the Log of the native platform
+  /// enable: whether to display the Log of flutter
+  /// pluginEnable: whether to display the Log of the native platform
   ///
   /// 是否展示log
-  /// enable：是否展示 flutter的Log ,  pluginEnable ：是否展示原生平台的Log
+  /// enable：是否展示 flutter的Log
+  /// pluginEnable ：是否展示原生平台的Log
   static Future<void> initLogEnable(bool log, bool pluginLog) async {
     logEnable = log;
     await _channel.invokeMethod('pluginLogEnable', pluginLog);
@@ -45,7 +46,6 @@ class PowerFileViewManager {
   /// Initialize the engine, this method is only valid for the Andorid platform, iOS does not need to call
   ///
   /// 初始化引擎，此方法只针对Andorid平台有效，iOS无需调用
-  /// 1. 判断手机是是否加载成功
   static Future<void> initEngine() async {
     if (!Platform.isAndroid) return;
     _channel.setMethodCallHandler(_handler);
@@ -102,9 +102,6 @@ class PowerFileViewManager {
     Map<String, dynamic>? queryParameters,
     CancelToken? cancelToken,
     Options? options,
-    String? fileSizeTip,
-    String? fileSizeFailTip,
-    String? fileSizeErrorTip,
   }) async =>
       DownloadUtil.fileSize(
         fileUrl,
@@ -112,9 +109,6 @@ class PowerFileViewManager {
         queryParameters: queryParameters,
         cancelToken: cancelToken,
         options: options,
-        fileSizeTip: fileSizeTip,
-        fileSizeErrorTip: fileSizeErrorTip,
-        fileSizeFailTip: fileSizeFailTip,
       );
 
   /// Get information about native platform callbacks
@@ -128,12 +122,12 @@ class PowerFileViewManager {
     switch (call.method) {
       case 'engineState':
         final type = EngineStateExtension.getType(call.arguments as int);
-        debugPrint('engineState callback: ${EngineStateExtension.description(type)}');
+        powerPrint('engineState callback: ${EngineStateExtension.description(type)}');
         _engineInitController.add(type);
         break;
       case 'engineDownloadProgress':
         int progress = call.arguments as int;
-        debugPrint('engineDownloadProgress callback: $progress');
+        powerPrint('engineDownloadProgress callback: $progress');
         _engineDownloadProgressController.add(progress);
         break;
       default:

@@ -1,8 +1,9 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:flutter/cupertino.dart';
 import 'package:power_file_view/power_file_view.dart';
+
+import 'constant/constants.dart';
 
 class PowerFileViewModel {
   String downloadUrl;
@@ -31,13 +32,13 @@ class PowerFileViewModel {
       required this.filePath,
       required this.viewTypeChanged,
       required this.progressChanged}) {
-    debugPrint('downloadUrl: $downloadUrl, downloadPath: $filePath');
+    powerPrint('downloadUrl: $downloadUrl, downloadPath: $filePath');
     addListenStream();
   }
 
   void addListenStream() {
     stateSubscription = PowerFileViewManager.engineInitStream.listen((EngineState e) async {
-      debugPrint('engineInitStream state: ${EngineStateExtension.description(e)}');
+      powerPrint('engineInitStream state: ${EngineStateExtension.description(e)}');
       if (_viewType == PowerViewType.engineLoading) {
         await updateViewType();
         viewTypeChanged(_viewType);
@@ -45,7 +46,7 @@ class PowerFileViewModel {
     });
 
     progressSubscription = PowerFileViewManager.engineDownloadStream.listen((int progress) async {
-      debugPrint('engineDownloadStream progress: $progress');
+      powerPrint('engineDownloadStream progress: $progress');
       this.progress = progress;
       if (_viewType == PowerViewType.engineLoading) {
         progressChanged(progress);
@@ -93,7 +94,7 @@ class PowerFileViewModel {
         return PowerViewType.engineFail;
       }
 
-      debugPrint('get engineState: ${EngineStateExtension.description(state)}');
+      powerPrint('get engineState: ${EngineStateExtension.description(state)}');
       switch (state) {
         case EngineState.done:
           return _viewTypeByLoadFile;
@@ -122,11 +123,11 @@ class PowerFileViewModel {
 
     int? size = await DownloadUtil.fileSize(downloadUrl, cancelToken: cancelToken);
     if (size == null) {
-      debugPrint("get file size error");
-      return PowerViewType.fileLoading;
+      powerPrint("get file size error");
+      return PowerViewType.fileFail;
     }
 
-    debugPrint("download file size: ${FileUtil.fileSize(size)}");
+    powerPrint("download file size: ${FileUtil.fileSize(size)}");
     DownloadUtil.download(downloadUrl, filePath, cancelToken: cancelToken, onProgress: (count, total) {
       final value = (count.toDouble() / total.toDouble() * 100).toInt();
       if (_viewType == PowerViewType.fileLoading) {
@@ -146,4 +147,31 @@ class PowerFileViewModel {
   bool get _isSupportPlatform => Platform.isAndroid || Platform.isIOS;
 
   bool get _isSupportFileType => FileUtil.isSupportOpen(fileType);
+
+  String getMsg(PowerLocalizations local) {
+    switch (_viewType) {
+      case PowerViewType.none:
+        return local.loading;
+      case PowerViewType.unsupportedPlatform:
+        return local.unsupportedPlatform;
+      case PowerViewType.nonExistent:
+        return local.nonExistent;
+      case PowerViewType.unsupportedType:
+        return sprintf(local.unsupportedType, fileType);
+      case PowerViewType.engineLoading:
+        return sprintf(local.engineLoading, '$progress');
+      case PowerViewType.engineFail:
+        return local.engineFail;
+      case PowerViewType.fileLoading:
+        return sprintf(local.fileLoading, '$progress');
+      case PowerViewType.fileFail:
+        return local.fileFail;
+      case PowerViewType.done:
+        return '';
+    }
+  }
+
+  String sprintf(String stringtf, String msg) {
+    return stringtf.replaceAll('%s', msg);
+  }
 }
