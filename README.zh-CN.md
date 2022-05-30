@@ -20,6 +20,7 @@
 ## 集成
 ### 1、依赖
 在pubspec.yaml文件下添加
+power_file_view: ^1.0.0
 
 ### 2、快速集成
 #### 1、Android

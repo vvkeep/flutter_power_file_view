@@ -20,6 +20,7 @@ A local file preview plugin, using PowerFileView, you can preview doc, docx, ppt
 ## Integration
 ### 1. Dependency
 Add under the pubspec.yaml file
+power_file_view: ^1.0.0
 
 ### 2. Quick integration
 #### 1. Android
