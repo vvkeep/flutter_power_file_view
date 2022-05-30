@@ -72,7 +72,7 @@ class PowerLocalizations extends PowerLocalizationsBase {
       'unsupportedPlatform': '当前仅支持Android、iOS',
       'nonExistent': '文件不存在',
       'unsupportedType': '不支持打开%s类型的文件',
-      'engineFail': '引擎加载失败，请重启App',
+      'engineFail': '引擎加载失败，请重试',
       'fileFail': '文件加载失败',
       'unkownError': '未知错误',
       'engineLoading': '引擎加载中(%s)',
