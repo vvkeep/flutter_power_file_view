@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
@@ -53,28 +54,104 @@ class HomePage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('文件列表'),
       ),
-      body: ListView.builder(
-          itemCount: files.length,
-          itemBuilder: (context, index) {
-            String filePath = files[index];
-            final fileName = FileUtil.getFileName(filePath);
-            final fileType = FileUtil.getFileType(filePath);
-            return Container(
-              margin: const EdgeInsets.only(top: 10.0),
-              padding: const EdgeInsets.symmetric(horizontal: 15.0),
-              child: ElevatedButton(
-                onPressed: () async {
-                  String savePath = await getFilePath(fileType, fileName);
-                  onTap(context, filePath, savePath);
-                },
-                child: Text(fileName),
-              ),
-            );
-          }),
+      body: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          ListView.builder(
+              shrinkWrap: true,
+              itemCount: files.length,
+              itemBuilder: (context, index) {
+                String filePath = files[index];
+                final fileName = FileUtil.getFileName(filePath);
+                final fileType = FileUtil.getFileType(filePath);
+                return Container(
+                  margin: const EdgeInsets.only(top: 10.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                  child: ElevatedButton(
+                    onPressed: () async {
+                      String savePath = await getFilePath(fileType, fileName);
+                      onTap(context, filePath, savePath);
+                    },
+                    child: Text(fileName),
+                  ),
+                );
+              }),
+          Container(
+            margin: const EdgeInsets.only(top: 10.0),
+            padding: const EdgeInsets.symmetric(horizontal: 15.0),
+            child: ElevatedButton(
+              onPressed: () async {
+                // pick file from storage
+                File? file = await FileUtil.getFilePathFromStorage();
+
+                if (file == null) {
+                  debugPrint('file null');
+                  // toast info
+                  showCustomToast(context, 'file null');
+                  return;
+                }
+
+                var filePath = file.path;
+                bool isGranted = await PermissionUtil.check();
+                if (isGranted) {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(builder: (ctx) {
+                      return PowerFileViewPage(
+                        downloadUrl: '',
+                        downloadPath: filePath,
+                      );
+                    }),
+                  );
+                } else {
+                  debugPrint('no permission');
+                }
+              },
+              child: Text('Open File'),
+            ),
+          ),
+        ],
+      ),
     );
   }
 
-  Future onTap(BuildContext context, String downloadUrl, String downloadPath) async {
+  void showCustomToast(BuildContext context, String message) {
+    OverlayState overlayState = Overlay.of(context)!;
+    OverlayEntry overlayEntry;
+    overlayEntry = OverlayEntry(
+      builder: (context) => Positioned(
+        top: MediaQuery.of(context).size.height * 0.8,
+        width: MediaQuery.of(context).size.width,
+        child: Material(
+          color: Colors.transparent,
+          child: Container(
+            alignment: Alignment.center,
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.black,
+                borderRadius: BorderRadius.circular(8),
+              ),
+              padding: EdgeInsets.symmetric(vertical: 10, horizontal: 16),
+              child: Text(
+                message,
+                style: TextStyle(
+                  color: Colors.white,
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+
+    overlayState.insert(overlayEntry);
+
+    Future.delayed(Duration(seconds: 2)).then((_) {
+      overlayEntry.remove();
+    });
+  }
+
+  Future onTap(
+      BuildContext context, String downloadUrl, String downloadPath) async {
     bool isGranted = await PermissionUtil.check();
     if (isGranted) {
       Navigator.of(context).push(

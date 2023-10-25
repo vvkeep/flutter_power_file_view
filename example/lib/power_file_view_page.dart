@@ -5,7 +5,9 @@ class PowerFileViewPage extends StatefulWidget {
   final String downloadUrl;
   final String downloadPath;
 
-  const PowerFileViewPage({Key? key, required this.downloadUrl, required this.downloadPath}) : super(key: key);
+  const PowerFileViewPage(
+      {Key? key, required this.downloadUrl, required this.downloadPath})
+      : super(key: key);
 
   @override
   State<PowerFileViewPage> createState() => _PowerFileViewPageState();
@@ -22,20 +24,20 @@ class _PowerFileViewPageState extends State<PowerFileViewPage> {
       body: PowerFileViewWidget(
         downloadUrl: widget.downloadUrl,
         filePath: widget.downloadPath,
-        // loadingBuilder: (viewType, progress) {
-        //   return Container(
-        //     color: Colors.grey,
-        //     alignment: Alignment.center,
-        //     child: Text("加载中: $progress"),
-        //   );
-        // },
-        // errorBuilder: (viewType) {
-        //   return Container(
-        //     color: Colors.red,
-        //     alignment: Alignment.center,
-        //     child: const Text("出错了"),
-        //   );
-        // },
+        loadingBuilder: (viewType, progress) {
+          return Container(
+            color: Colors.grey,
+            alignment: Alignment.center,
+            child: Text("loading: $progress"),
+          );
+        },
+        errorBuilder: (viewType) {
+          return Container(
+            color: Colors.red,
+            alignment: Alignment.center,
+            child: const Text("ERROR FILE CANNOT OPEN"),
+          );
+        },
       ),
     );
   }
