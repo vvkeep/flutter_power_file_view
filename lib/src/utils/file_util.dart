@@ -1,12 +1,23 @@
 import 'dart:io';
 
+import 'package:file_picker/file_picker.dart';
+
 class FileUtil {
   /// Whether the file exists
   static bool isExistsFile(String filePath) => File(filePath).existsSync();
 
   /// Whether type of the file support
   static bool isSupportOpen(String fileType) {
-    final List<String> types = <String>['docx', 'doc', 'xlsx', 'xls', 'pptx', 'ppt', 'pdf', 'txt'];
+    final List<String> types = <String>[
+      'docx',
+      'doc',
+      'xlsx',
+      'xls',
+      'pptx',
+      'ppt',
+      'pdf',
+      'txt'
+    ];
     return types.contains(fileType.toLowerCase());
   }
 
@@ -71,5 +82,29 @@ class FileUtil {
     }
 
     return '${(size / tbDivider).toStringAsFixed(round)} PB';
+  }
+
+  static Future<File?> getFilePathFromStorage() async {
+    // pick file from storage
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: [
+        'pdf',
+        'doc',
+        'docx',
+        'ppt',
+        'pptx',
+        'xls',
+        'xlsx',
+        'txt'
+      ],
+    );
+
+    if (result != null) {
+      return File(result.files.single.path!);
+    } else {
+      // User canceled the picker
+      return null;
+    }
   }
 }
